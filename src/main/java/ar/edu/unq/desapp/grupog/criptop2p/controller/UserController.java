@@ -7,27 +7,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "api/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-
-    @CrossOrigin
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<User> list() {
         List<User> users = userService.list();
         return new ResponseEntity(users, HttpStatus.OK);
     }
 
-    @CrossOrigin
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User userCreated = userService.create(user);
         return new ResponseEntity(userCreated, HttpStatus.CREATED);
     }
