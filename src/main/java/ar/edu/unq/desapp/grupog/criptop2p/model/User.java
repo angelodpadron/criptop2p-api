@@ -1,55 +1,101 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
-@Entity(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @JsonProperty("first_name")
     @Size(min = 3, max = 30, message = "Invalid name format. The length must be from 3 to 30 characters.")
+    @NotEmpty
     private String firstname;
-    @JsonProperty("last_name")
     @Size(min = 3, max = 30, message = "Invalid last name format. The length must be from 3 to 30 characters.")
+    @NotEmpty
     private String lastname;
-    @JsonProperty("email")
     @Email(message = "Invalid email format.")
+    @NotEmpty
     private String email;
-    @JsonProperty("password")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "The password must contain at least an uppercase, a lowercase, a number and a special character")
+    @NotEmpty
     private String password;
-    @JsonProperty("address")
     @Size(min = 10, max = 30)
+    @NotEmpty
     private String address;
-    @JsonProperty("cvu_mercadopago")
     @Pattern(regexp = "^\\d{22}$", message = "Invalid CVU format. The CVU consists of a 22 digit number.")
+    @NotEmpty
     private String cvuMercadoPago;
-    @JsonProperty("wallet_address")
     @Pattern(regexp = "^\\d{8}$", message = "Invalid wallet address format. The wallet address consists of a 8 digit number.")
+    @NotEmpty
     private String walletAddress;
 
-    public User(String firstname, String lastname, String email, String password, String address, String cvuMercadoPago, String walletAddress) {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
         this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCvuMercadoPago() {
+        return cvuMercadoPago;
+    }
+
+    public void setCvuMercadoPago(String cvuMercadoPago) {
         this.cvuMercadoPago = cvuMercadoPago;
+    }
+
+    public String getWalletAddress() {
+        return walletAddress;
+    }
+
+    public void setWalletAddress(String walletAddress) {
         this.walletAddress = walletAddress;
-    }
-
-    public User() {
-
-    }
-
-    @Override
-    public String toString() {
-        return "User{" + "id=" + this.id + '\'' + "email=" + this.email + '\'' + '}';
     }
 }
