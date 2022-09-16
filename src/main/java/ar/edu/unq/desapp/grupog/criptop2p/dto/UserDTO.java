@@ -1,6 +1,8 @@
 package ar.edu.unq.desapp.grupog.criptop2p.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
@@ -10,6 +12,8 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
     @Size(min = 3, max = 30, message = "Invalid name format. The length must be from 3 to 30 characters.")
     @NotEmpty
