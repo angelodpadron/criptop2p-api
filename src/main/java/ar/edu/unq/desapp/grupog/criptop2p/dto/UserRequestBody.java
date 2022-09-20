@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserRequestBody {
     @Size(min = 3, max = 30, message = "Invalid name format. The length must be from 3 to 30 characters.")
     @NotEmpty
     private String firstname;

@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupog.criptop2p.webservices;
 
-import ar.edu.unq.desapp.grupog.criptop2p.dto.UserDTO;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -26,28 +28,31 @@ public class UserIntegrationTest {
     @Test
     public void aValidUserRegistrationRequestReturnsACreatedResponse() throws Exception {
 
-        UserDTO validUserCreationRequest = generateValidUserDTO();
+        UserRequestBody validUserCreationRequest = generateValidUserRequest();
 
         mvc.perform(post("/api/user/create")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(validUserCreationRequest)))
-                .andExpect(status().isCreated());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(validUserCreationRequest)))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(mapper.writeValueAsString(validUserCreationRequest)));
+
     }
 
     @Test
     public void anInvalidUserRegistrationRequestReturnsABadRequestResponse() throws Exception {
 
-        UserDTO invalidUserCreationRequest = generateInvalidUserDTO();
+        UserRequestBody invalidUserCreationRequest = generateInvalidUserRequest();
 
         mvc.perform(post("/api/user/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(invalidUserCreationRequest)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("must not be empty")));
 
     }
 
-    private UserDTO generateValidUserDTO() {
-        return new UserDTO(
+    private UserRequestBody generateValidUserRequest() {
+        return new UserRequestBody(
                 "John",
                 "Doe",
                 "jdoe@domain.com",
@@ -55,11 +60,11 @@ public class UserIntegrationTest {
                 "some address",
                 "4608738591410700747451",
                 "45821674"
-                );
+        );
     }
 
-    private UserDTO generateInvalidUserDTO() {
-        return new UserDTO(
+    private UserRequestBody generateInvalidUserRequest() {
+        return new UserRequestBody(
                 "John",
                 "Doe",
                 null,
