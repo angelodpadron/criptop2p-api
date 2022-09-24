@@ -1,9 +1,9 @@
-package ar.edu.unq.desapp.grupog.criptop2p.ModelTest;
+package ar.edu.unq.desapp.grupog.criptop2p.model;
 
-import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest

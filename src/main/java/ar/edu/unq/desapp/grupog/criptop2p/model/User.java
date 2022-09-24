@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,39 +17,26 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique=true)
-    @NotBlank(message = "Firstname is required")
-    @Size(min=3, max = 30)
+    @Size(min = 3, max = 30, message = "Invalid name format. The length must be from 3 to 30 characters.")
+    @NotEmpty
     private String firstname;
-
-    @Column
-    @NotBlank(message = "Lastname is required")
-    @Size(min=3, max = 30)
+    @Size(min = 3, max = 30, message = "Invalid last name format. The length must be from 3 to 30 characters.")
+    @NotEmpty
     private String lastname;
-
-    @Column
     @NotBlank(message = "Email is required")
-    @Email(message = "Incorrect email")
+    @Email(message = "Invalid email format.")
     private String email;
-
-    @Column
-    @NotBlank(message = "1 minuscula, 1 mayúscula, 1 carac especial ")
-    @Size(min=6)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "The password must contain at least an uppercase, a lowercase, a number and a special character")
+    @NotEmpty
     private String password;
-
-    @Column
-    @NotBlank(message = "Address is required")
-    @Size(min=10, max = 30)
+    @Size(min = 10, max = 30)
+    @NotEmpty
     private String address;
-
-    @Column
-    @NotBlank(message = "CVU Mercado Pago is required")
-    @Size(min=22, max = 22)
+    @Pattern(regexp = "^\\d{22}$", message = "Invalid CVU format. The CVU consists of a 22 digit number.")
+    @NotEmpty
     private String cvuMercadoPago;
-
-    @Column
-    @NotBlank(message = "Wallet address is required")
-    @Size(min=8, max = 8)
+    @Pattern(regexp = "^\\d{8}$", message = "Invalid wallet address format. The wallet address consists of a 8 digit number.")
+    @NotEmpty
     private String walletAddress;
 
 }
