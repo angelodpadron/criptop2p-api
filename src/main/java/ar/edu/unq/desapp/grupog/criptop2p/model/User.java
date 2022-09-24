@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +17,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Size(min = 3, max = 30, message = "Invalid name format. The length must be from 3 to 30 characters.")
     @NotEmpty
     private String firstname;
@@ -38,5 +38,10 @@ public class User {
     @Pattern(regexp = "^\\d{8}$", message = "Invalid wallet address format. The wallet address consists of a 8 digit number.")
     @NotEmpty
     private String walletAddress;
+    @OneToMany
+    private List<MarketOrder> marketOrders;
+    @OneToMany
+    private List<TransactionOrder> pendingOrders;
+
 
 }
