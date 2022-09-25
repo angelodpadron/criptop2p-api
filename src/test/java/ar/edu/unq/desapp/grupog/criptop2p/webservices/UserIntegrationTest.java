@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupog.criptop2p.webservices;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,6 +27,7 @@ public class UserIntegrationTest {
     private ObjectMapper mapper;
 
     @Test
+    @DisplayName("A valid user registration requests returns a created status request")
     public void aValidUserRegistrationRequestReturnsACreatedResponse() throws Exception {
 
         UserRequestBody validUserCreationRequest = generateValidUserRequest();
@@ -39,6 +41,7 @@ public class UserIntegrationTest {
     }
 
     @Test
+    @DisplayName("An invalid user registration requests returns a bad request status request")
     public void anInvalidUserRegistrationRequestReturnsABadRequestResponse() throws Exception {
 
         UserRequestBody invalidUserCreationRequest = generateInvalidUserRequest();

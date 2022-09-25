@@ -38,10 +38,13 @@ public class User {
     @Pattern(regexp = "^\\d{8}$", message = "Invalid wallet address format. The wallet address consists of a 8 digit number.")
     @NotEmpty
     private String walletAddress;
+
     @OneToMany
     private List<MarketOrder> marketOrders;
     @OneToMany
     private List<TransactionOrder> pendingOrders;
+    @OneToMany
+    private List<TransactionOrder> transactionHistory;
 
 
 }

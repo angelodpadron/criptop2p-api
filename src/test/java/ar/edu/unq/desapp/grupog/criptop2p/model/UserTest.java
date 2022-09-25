@@ -15,7 +15,7 @@ public class UserTest {
 
     public void setUp() {
 
-        user1 = new User(1, "Jose", "Perez", "jperez@gmail.com", "Password.", "bernal", "4608738591410700747451", "45821674", null, null);
+        user1 = new User(1, "Jose", "Perez", "jperez@gmail.com", "Password.", "bernal", "4608738591410700747451", "45821674", null, null, null);
 
     }
 
