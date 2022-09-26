@@ -27,4 +27,10 @@ public class RequestExceptionHandler {
                 .collect(groupingBy(FieldError::getField, mapping(DefaultMessageSourceResolvable::getDefaultMessage, toList())));
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(EmailAlreadyTakenException.class)
+    public String handleEmailAlreadyTaken(EmailAlreadyTakenException exception) {
+        return exception.getMessage();
+    }
+
 }

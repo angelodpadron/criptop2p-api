@@ -27,8 +27,8 @@ public class UserIntegrationTest {
     private ObjectMapper mapper;
 
     @Test
-    @DisplayName("A valid user registration requests returns a created status request")
-    public void aValidUserRegistrationRequestReturnsACreatedResponse() throws Exception {
+    @DisplayName("A valid user registration requests returns a created status response")
+    public void aValidUserRegistrationRequestTest() throws Exception {
 
         UserRequestBody validUserCreationRequest = generateValidUserRequest();
 
@@ -41,8 +41,8 @@ public class UserIntegrationTest {
     }
 
     @Test
-    @DisplayName("An invalid user registration requests returns a bad request status request")
-    public void anInvalidUserRegistrationRequestReturnsABadRequestResponse() throws Exception {
+    @DisplayName("An invalid user registration requests returns a bad request status response")
+    public void anInvalidUserRegistrationRequestTest() throws Exception {
 
         UserRequestBody invalidUserCreationRequest = generateInvalidUserRequest();
 
