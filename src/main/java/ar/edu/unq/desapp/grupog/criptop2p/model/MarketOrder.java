@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
-import ar.edu.unq.desapp.grupog.criptop2p.exception.InvalidOperationPrice;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.InvalidOperationPriceException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,7 +45,7 @@ public class MarketOrder {
         if (targetPriceInRange(marketPrice, targetPrice)) {
             this.targetPrice = targetPrice;
         } else {
-            throw new InvalidOperationPrice("Target price exceeds allowable variation");
+            throw new InvalidOperationPriceException("Target price exceeds allowable variation");
         }
         this.creator = creator;
         this.operation = operation;

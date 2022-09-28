@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.*;
 
 @RestControllerAdvice
-public class RequestExceptionHandler {
+public class ControllerAdvisor {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -30,6 +31,12 @@ public class RequestExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(EmailAlreadyTakenException.class)
     public String handleEmailAlreadyTaken(EmailAlreadyTakenException exception) {
+        return exception.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String handleConstraints(ConstraintViolationException exception) {
         return exception.getMessage();
     }
 

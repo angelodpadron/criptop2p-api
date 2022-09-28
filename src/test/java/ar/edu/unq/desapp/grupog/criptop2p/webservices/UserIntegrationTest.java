@@ -50,7 +50,7 @@ public class UserIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(invalidUserCreationRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("must not be empty")));
+                .andExpect(content().string(containsString("Email is required")));
 
     }
 
