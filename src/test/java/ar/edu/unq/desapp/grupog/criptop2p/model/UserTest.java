@@ -1,9 +1,9 @@
-package ar.edu.unq.desapp.grupog.criptop2p.ModelTest;
+package ar.edu.unq.desapp.grupog.criptop2p.model;
 
-import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -14,9 +14,7 @@ public class UserTest {
     @BeforeEach
 
     public void setUp() {
-
-        user1 = new User(1, "Jose", "Perez", "jperez@gmail.com", "Password.", "bernal", "4608738591410700747451", "45821674");
-
+        user1 = new User(1, "Jose", "Perez", "jperez@gmail.com", "Password.", "bernal", "4608738591410700747451", "45821674", null, null, null);
     }
 
     @Test
