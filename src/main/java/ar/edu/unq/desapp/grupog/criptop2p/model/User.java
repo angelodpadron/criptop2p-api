@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,12 +40,33 @@ public class User {
     @NotEmpty
     private String walletAddress;
 
+    @JsonIgnore
     @OneToMany
     private List<MarketOrder> marketOrders;
+    @JsonIgnore
     @OneToMany
     private List<TransactionOrder> pendingOrders;
+    @JsonIgnore
     @OneToMany
     private List<TransactionOrder> transactionHistory;
 
+    private Integer points = 0;
+    private Integer operations = 0;
 
+    public User(String firstname, String lastname, String email, String password, String address, String cvuMercadoPago, String walletAddress) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.cvuMercadoPago = cvuMercadoPago;
+        this.walletAddress = walletAddress;
+    }
+
+    public int getReputation() {
+        if (operations == 0) {
+            return operations;
+        }
+        return points / operations;
+    }
 }

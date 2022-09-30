@@ -47,6 +47,21 @@ public class MarketOrderTest {
 
     }
 
+    @Test
+    @DisplayName("A market order is initially available")
+    public void aMarketOrderAnAvailableStatusTest() {
+        MarketOrder marketOrder = new MarketOrder();
+        assertTrue(marketOrder.getAvailable());
+    }
+
+    @Test
+    @DisplayName("A market order is unavailable when is taken")
+    public void aMarketOrderWithAnUnavailableStatusTest() {
+        MarketOrder marketOrder = new MarketOrder();
+        marketOrder.take();
+        assertFalse(marketOrder.getAvailable());
+
+    }
 
     private MarketOrder generateMarketOrderWithPrices(Double targetPrice, Double marketPrice) throws MarketOrderException {
         return new MarketOrder(null, null, null, null, marketPrice, targetPrice, null, null);

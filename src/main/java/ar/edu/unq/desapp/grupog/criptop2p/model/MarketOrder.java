@@ -26,6 +26,7 @@ public class MarketOrder {
     private User creator;
     @Enumerated(EnumType.STRING)
     private OperationType operation;
+    private Boolean available = true;
     @Transient
     private Double priceMarginAllowed = 0.5;
 
@@ -55,5 +56,9 @@ public class MarketOrder {
         Double maxAllowedPrice = marketPrice + marketPrice * priceMarginAllowed;
         Double minAllowedPrice = marketPrice - marketPrice * priceMarginAllowed;
         return targetPrice >= minAllowedPrice && targetPrice <= maxAllowedPrice;
+    }
+
+    public void take() {
+        this.available = false;
     }
 }

@@ -26,8 +26,11 @@ public class UserService {
 
 
     public User create(UserRequestBody userRequestBody) throws EmailAlreadyTakenException {
-        checkIfRequestedEmailIsAlreadyTaken(userRequestBody);
         User user = requestBodyToEntityMapper(userRequestBody);
+
+        checkUserValidations(user);
+        checkIfEmailIsAlreadyTaken(user.getEmail());
+
         log.info("Saving new user {} to the database", user.getEmail());
 
         return repository.save(user);
@@ -35,14 +38,12 @@ public class UserService {
 
 
     private User requestBodyToEntityMapper(UserRequestBody requestBody) {
-        User user = modelMapper.map(requestBody, User.class);
-        checkUserValidations(user);
-        return user;
+        return modelMapper.map(requestBody, User.class);
     }
 
-    private void checkIfRequestedEmailIsAlreadyTaken(UserRequestBody userRequestBody) throws EmailAlreadyTakenException {
-        if (emailAlreadyTaken(userRequestBody.getEmail())) {
-            throw new EmailAlreadyTakenException("There is an account with that email address:" + userRequestBody.getEmail());
+    private void checkIfEmailIsAlreadyTaken(String email) throws EmailAlreadyTakenException {
+        if (emailAlreadyTaken(email)) {
+            throw new EmailAlreadyTakenException("There is an account with that email address:" + email);
         }
     }
 
