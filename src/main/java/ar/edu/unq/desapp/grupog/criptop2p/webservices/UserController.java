@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.EmailAlreadyTakenException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "Create a new user on the platform")
     @PostMapping(path = "/create")
     @ResponseBody
     public ResponseEntity<User> createUser(@RequestBody UserRequestBody userRequestBody) throws EmailAlreadyTakenException {
