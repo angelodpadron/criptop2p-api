@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class CryptoQuotation {
     @JsonProperty("price_in_ars")
     private Double priceInARS;
     @JsonProperty("last_update")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime lastUpdate;
 
     public CryptoQuotation(String symbol, Double priceInUSD, Double priceInARS) {
