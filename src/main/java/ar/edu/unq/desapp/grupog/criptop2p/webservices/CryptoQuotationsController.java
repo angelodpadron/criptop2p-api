@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,5 +23,11 @@ public class CryptoQuotationsController {
     @GetMapping
     public ResponseEntity<List<CryptoQuotation>> getAllQuotations() {
         return ResponseEntity.ok().body(cryptoQuotationService.getAllQuotations());
+    }
+
+    @Operation(summary = "Fetch quotation for a given cryptocurrency")
+    @GetMapping("{symbol}")
+    public ResponseEntity<CryptoQuotation> getQuotation(@PathVariable String symbol) {
+        return ResponseEntity.ok().body(cryptoQuotationService.getQuotation(symbol));
     }
 }
