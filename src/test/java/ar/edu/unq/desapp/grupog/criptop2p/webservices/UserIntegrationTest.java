@@ -35,8 +35,7 @@ public class UserIntegrationTest {
         mvc.perform(post("/api/user/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(validUserCreationRequest)))
-                .andExpect(status().isCreated())
-                .andExpect(content().json(mapper.writeValueAsString(validUserCreationRequest)));
+                .andExpect(status().isCreated());
 
     }
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class User {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format.")
     private String email;
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "The password must contain at least an uppercase, a lowercase, a number and a special character")
+    //    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "The password must contain at least an uppercase, a lowercase, a number and a special character")
     @NotEmpty
     private String password;
     @Size(min = 10, max = 30)
@@ -46,10 +47,9 @@ public class User {
     @JsonIgnore
     @OneToMany
     private List<TransactionOrder> pendingOrders;
+    @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
-    @OneToMany
-    private List<TransactionOrder> transactionHistory;
-
+    private List<Role> roles = new ArrayList<>();
     private Integer points = 0;
     private Integer operations = 0;
 
@@ -68,5 +68,9 @@ public class User {
             return operations;
         }
         return points / operations;
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
     }
 }
