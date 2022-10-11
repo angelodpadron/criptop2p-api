@@ -40,7 +40,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/login/**", "/api/user/create").permitAll()
+                .antMatchers("/api/login/**", "/api/user/register/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/quotations/**").hasAnyAuthority("ROLE_USER")
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2/**").permitAll()
                 .anyRequest().authenticated()

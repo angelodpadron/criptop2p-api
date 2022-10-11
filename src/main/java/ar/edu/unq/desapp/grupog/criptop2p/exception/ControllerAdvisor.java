@@ -40,4 +40,10 @@ public class ControllerAdvisor {
         return exception.getMessage();
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MarketOrderException.class)
+    public String handleInvalidMarketOrder(MarketOrderException exception) {
+        return exception.getMessage();
+    }
+
 }

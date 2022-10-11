@@ -5,45 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class UserTest {
-
-    private final User aValidUser = generateValidUser();
-
-    @Test
-    void test01ANewUserIsCreatedAndIVerifyThatItsNameAndLastNameIsCorrect() {
-        assertEquals("Jose", aValidUser.getFirstname());
-        assertEquals("Perez", aValidUser.getLastname());
-    }
-
-    @Test
-    void test02VerifyThatTheEmailAndPasswordAreCorrect() {
-        assertEquals("jperez@gmail.com", aValidUser.getEmail());
-        assertEquals("Password@1", aValidUser.getPassword());
-    }
-
-    @Test
-    void test03VerifyThatTheUserAddressIsCorrect() {
-        assertEquals("Bernal", aValidUser.getAddress());
-    }
-
-    @Test
-    void test04VerifyThatTheCvuOfMarketPaymentIsCorrect() {
-        assertEquals("4608738591410700747451", aValidUser.getCvuMercadoPago());
-    }
-
-    @Test
-    void test05VerifyThatTheAddressOfTheCryptoAssetWalletIsCorrect() {
-        assertEquals("45821674", aValidUser.getWalletAddress());
-    }
-
-    @Test
-    @DisplayName("A user initially has zero points")
-    void aUserInitiallyHasZeroPointsTest() {
-        User user = new User();
-        assertEquals(0, user.getPoints());
-    }
 
     @Test
     @DisplayName("The points of a user can be modified")
@@ -84,13 +51,60 @@ public class UserTest {
         assertEquals(1, user.getReputation());
     }
 
-    private User generateValidUser() {
-        return new User("Jose",
-                "Perez",
-                "jperez@gmail.com",
-                "Password@1",
-                "Bernal",
-                "4608738591410700747451",
-                "45821674");
+    @Test
+    @DisplayName("Initially a user have no roles")
+    void aUserWithoutRolesTest() {
+        User user = new User();
+        assertTrue(user.getRoles().isEmpty());
     }
+
+    @Test
+    @DisplayName("A role can be assigned to a user")
+    void aUserWithRolesTest() {
+        User user = new User();
+        Role role = mock(Role.class);
+        when(role.getName()).thenReturn("USER_ROLE");
+
+        user.addRole(role);
+
+        assertTrue(user.getRoles().contains(role));
+        assertEquals("USER_ROLE", user.getRoles().get(0).getName());
+    }
+
+    @Test
+    @DisplayName("Initially a user have no market orders")
+    void aUserWithoutMarketOrdersTest() {
+        User user = new User();
+        assertTrue(user.getMarketOrders().isEmpty());
+    }
+
+    @Test
+    @DisplayName("A market order can be assigned to a user")
+    void aUserWithMarketOrdersTest() {
+        User user = new User();
+        MarketOrder marketOrder = mock(MarketOrder.class);
+
+        user.addMarketOrder(marketOrder);
+
+        assertTrue(user.getMarketOrders().contains(marketOrder));
+    }
+
+    @Test
+    @DisplayName("Initially a user have no transaction orders")
+    void aUserWithoutTransactionOrdersTest() {
+        User user = new User();
+        assertTrue(user.getTransactionOrders().isEmpty());
+    }
+
+    @Test
+    @DisplayName("A transaction order can be assigned to a user")
+    void aUserWithTransactionOrdersTest() {
+        User user = new User();
+        TransactionOrder transactionOrder = mock(TransactionOrder.class);
+
+        user.addTransactionOrder(transactionOrder);
+
+        assertTrue(user.getTransactionOrders().contains(transactionOrder));
+    }
+
 }

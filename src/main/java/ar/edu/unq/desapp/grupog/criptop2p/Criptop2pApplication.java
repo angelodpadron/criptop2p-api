@@ -32,7 +32,7 @@ public class Criptop2pApplication {
 	CommandLineRunner run(UserService userService) {
 		return args -> {
 			userService.saveRole(new Role(null, "ROLE_USER"));
-			userService.create(new UserRequestBody(
+			userService.saveUser(new UserRequestBody(
 					"Juan",
 					"Nieve",
 					"jnieve@gmail.com",

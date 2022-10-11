@@ -32,7 +32,7 @@ public class UserIntegrationTest {
 
         UserRequestBody validUserCreationRequest = generateValidUserRequest();
 
-        mvc.perform(post("/api/user/create")
+        mvc.perform(post("/api/user/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(validUserCreationRequest)))
                 .andExpect(status().isCreated());
@@ -45,7 +45,7 @@ public class UserIntegrationTest {
 
         UserRequestBody invalidUserCreationRequest = generateInvalidUserRequest();
 
-        mvc.perform(post("/api/user/create")
+        mvc.perform(post("/api/user/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(invalidUserCreationRequest)))
                 .andExpect(status().isBadRequest())
