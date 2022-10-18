@@ -15,10 +15,14 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class MarketOrderResponseBody {
-    @JsonProperty("order_id")
+    @JsonProperty("market_order_id")
     private Long id;
     @JsonProperty("user")
     private String userEmail;
+    @JsonProperty("user_reputation")
+    private int userReputation;
+    @JsonProperty("user_operation_amount")
+    private int userOperationAmount;
     @JsonProperty("creation_date")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime creationDate;
@@ -27,10 +31,10 @@ public class MarketOrderResponseBody {
     private Double nominalAmount;
     @JsonProperty("market_price")
     private Double marketPrice;
-    @JsonProperty("target_price") // or selling_price and purchase_price?
+    @JsonProperty("target_price")
     private Double targetPrice;
     private OperationType operation;
-    private Boolean available = true;
+    private Boolean available;
 
 
 }

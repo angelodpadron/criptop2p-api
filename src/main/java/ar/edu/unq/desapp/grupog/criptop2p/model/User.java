@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
+import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,16 +28,26 @@ public class User {
     private String walletAddress;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator")
     private List<MarketOrder> marketOrders = new ArrayList<>();
     @JsonIgnore
-    @OneToMany
+    @ManyToMany
     private List<TransactionOrder> transactionOrders = new ArrayList<>();
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Role> roles = new ArrayList<>();
     private Integer points = 0;
     private Integer operations = 0;
+
+    public User(String firstname, String lastname, String email, String password, String address, String cvuMercadoPago, String walletAddress) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.cvuMercadoPago = cvuMercadoPago;
+        this.walletAddress = walletAddress;
+    }
 
     public int getReputation() {
         if (operations == 0) {
@@ -55,5 +66,22 @@ public class User {
 
     public void addTransactionOrder(TransactionOrder transactionOrder) {
         transactionOrders.add(transactionOrder);
+    }
+
+    public TransactionOrder applyTo(MarketOrder marketOrder) throws MarketOrderException {
+        TransactionOrder transactionOrder = marketOrder.generateTransaction(this);
+        return transactionOrder;
+    }
+
+    public void cancelTransactionOrder(TransactionOrder transactionOrder) {
+        transactionOrder.cancelTransactionFor(this);
+    }
+
+    public void substratePoints(int points) {
+        this.points -= points;
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
     }
 }

@@ -2,10 +2,13 @@ package ar.edu.unq.desapp.grupog.criptop2p.model;
 
 import ar.edu.unq.desapp.grupog.criptop2p.exception.InvalidOperationPriceException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class MarketOrderTest {
 
@@ -55,11 +58,40 @@ public class MarketOrderTest {
     }
 
     @Test
-    @DisplayName("A market order is unavailable when is taken")
-    public void aMarketOrderWithAnUnavailableStatusTest() {
-        MarketOrder marketOrder = new MarketOrder();
-        marketOrder.take();
+    @DisplayName("A market order is unavailable when a user applies to it")
+    public void aMarketOrderGetsUnavailableTest() throws MarketOrderException {
+        MarketOrder marketOrder = ModelTestResources.getMarketOrder1();
+        User interestedUser = mock(User.class);
+        when(interestedUser.getEmail()).thenReturn("interested@email.com");
+
+        marketOrder.generateTransaction(interestedUser);
+
         assertFalse(marketOrder.getAvailable());
+    }
+
+    @Test
+    @DisplayName("A market order generates a transaction order when a user apply to it")
+    public void aMarketOrderGeneratesATransactionOrderTest() throws MarketOrderException {
+        MarketOrder marketOrder = ModelTestResources.getMarketOrder1();
+        User interestedUser = ModelTestResources.getBasicUser1();
+        User dealerUser = ModelTestResources.getBasicUser2();
+
+        marketOrder.setCreator(dealerUser);
+        marketOrder.generateTransaction(interestedUser);
+
+        assertFalse(dealerUser.getTransactionOrders().isEmpty());
+        assertFalse(interestedUser.getTransactionOrders().isEmpty());
+
+    }
+
+    @Test
+    @DisplayName("A market order cannot generate a transaction for the user who created it")
+    public void aMarketOrderCannotGenerateATransactionForTheSameUserTest() {
+        MarketOrder marketOrder = ModelTestResources.getMarketOrder1();
+        User dealerUser = ModelTestResources.getBasicUser1();
+        marketOrder.setCreator(dealerUser);
+
+        assertThrows(MarketOrderException.class, () -> marketOrder.generateTransaction(dealerUser));
 
     }
 

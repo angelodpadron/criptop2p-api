@@ -1,11 +1,13 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
+import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getBasicUser1;
+import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getBasicUser2;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,6 +42,22 @@ public class UserTest {
     void aUserInitiallyHasAReputationOfZeroTest() {
         User user = new User();
         assertEquals(0, user.getReputation());
+    }
+
+    @Test
+    @DisplayName("The points of a user can be incremented")
+    void incrementUserPointsTest() {
+        User user = new User();
+        user.addPoints(10);
+        assertEquals(10, user.getPoints());
+    }
+
+    @Test
+    @DisplayName("The points of a user can be decremented")
+    void decrementUserPointsTest() {
+        User user = new User();
+        user.substratePoints(10);
+        assertEquals(-10, user.getPoints());
     }
 
     @Test
@@ -105,6 +123,38 @@ public class UserTest {
         user.addTransactionOrder(transactionOrder);
 
         assertTrue(user.getTransactionOrders().contains(transactionOrder));
+    }
+
+    @Test
+    @DisplayName("A user can apply to a market order")
+    void aUserApplyToAMarketOrderTest() throws MarketOrderException {
+        User interestedUser = getBasicUser1();
+        User dealerUser = getBasicUser2();
+
+        MarketOrder marketOrder = new MarketOrder();
+        marketOrder.setCreator(dealerUser);
+
+        interestedUser.applyTo(marketOrder);
+
+        assertFalse(interestedUser.getTransactionOrders().isEmpty());
+        assertFalse(dealerUser.getTransactionOrders().isEmpty());
+
+    }
+
+    @Test
+    @DisplayName("When a user cancel a transaction their points is reduced by 20")
+    void aUserCancelTheirTransactionTest() {
+        User user = new User();
+        TransactionOrder transactionOrder = new TransactionOrder();
+        MarketOrder marketOrder = mock(MarketOrder.class);
+
+        transactionOrder.setDealerUser(user);
+        transactionOrder.setMarketOrder(marketOrder);
+
+        user.cancelTransactionOrder(transactionOrder);
+
+        assertEquals(-20, user.getPoints());
+
     }
 
 }

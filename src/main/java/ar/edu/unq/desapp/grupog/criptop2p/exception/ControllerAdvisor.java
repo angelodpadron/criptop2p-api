@@ -46,4 +46,10 @@ public class ControllerAdvisor {
         return exception.getMessage();
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(TransactionOrderException.class)
+    public String handleInvalidTransactionOrder(TransactionOrderException exception) {
+        return exception.getMessage();
+    }
+
 }

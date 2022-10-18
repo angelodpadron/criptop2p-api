@@ -16,15 +16,28 @@ public class TransactionOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne
+    @ManyToOne
     private MarketOrder marketOrder;
     private LocalDateTime creationDate;
-    @OneToOne
-    private User orderCreator;
-    @OneToOne
+    @ManyToOne
     private User interestedUser;
-    @Enumerated(EnumType.ORDINAL)
+    @ManyToOne
+    private User dealerUser;
+    @Enumerated(EnumType.STRING)
     private TransactionStatus status = TransactionStatus.PENDING;
+
+    public static TransactionOrder generateFor(MarketOrder marketOrder, User interestedUser) {
+        TransactionOrder transactionOrder = new TransactionOrder();
+        transactionOrder.setMarketOrder(marketOrder);
+        transactionOrder.setCreationDate(LocalDateTime.now());
+        transactionOrder.setDealerUser(marketOrder.getCreator());
+        transactionOrder.setInterestedUser(interestedUser);
+
+        interestedUser.addTransactionOrder(transactionOrder);
+        marketOrder.getCreator().addTransactionOrder(transactionOrder);
+
+        return transactionOrder;
+    }
 
     public void closeTransaction() {
         status = TransactionStatus.CLOSED;
@@ -34,5 +47,9 @@ public class TransactionOrder {
         status = TransactionStatus.CANCELED;
     }
 
-
+    public void cancelTransactionFor(User user) {
+        user.substratePoints(20);
+        cancelTransaction();
+        marketOrder.setAvailable(true);
+    }
 }

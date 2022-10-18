@@ -1,10 +1,10 @@
 package ar.edu.unq.desapp.grupog.criptop2p.webservices;
 
-import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.EmailAlreadyTakenException;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
+import ar.edu.unq.desapp.grupog.criptop2p.service.MarketOrderService;
 import ar.edu.unq.desapp.grupog.criptop2p.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/user")
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final MarketOrderService marketOrderService;
 
     @Operation(summary = "Create a new user on the platform")
     @PostMapping(path = "/register")
@@ -31,11 +33,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userCreated);
     }
 
-    @Operation(summary = "Create a market order")
-    @PostMapping(path = "/marketorder/create")
+    @Operation(summary = "Get all market orders created")
+    @GetMapping("/marketorder/all")
     @ResponseBody
-    public ResponseEntity<MarketOrderRequestBody> createMarketOrder(@RequestBody MarketOrderRequestBody marketOrderRequestBody) throws MarketOrderException {
-        userService.addMarketOrderToUser(marketOrderRequestBody);
-        return ResponseEntity.status(HttpStatus.CREATED).body(marketOrderRequestBody);
+    public ResponseEntity<List<MarketOrderResponseBody>> getAllUserMarketOrders() {
+        return ResponseEntity.ok().body(marketOrderService.getUserMarketOrders());
     }
+
 }
