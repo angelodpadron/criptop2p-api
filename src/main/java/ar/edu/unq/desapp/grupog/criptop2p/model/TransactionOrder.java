@@ -24,7 +24,7 @@ public class TransactionOrder {
     @ManyToOne
     private User dealerUser;
     @Enumerated(EnumType.STRING)
-    private TransactionStatus status = TransactionStatus.PENDING;
+    private TransactionStatus status = TransactionStatus.AWAITING_PAYMENT;
 
     public static TransactionOrder generateFor(MarketOrder marketOrder, User interestedUser) {
         TransactionOrder transactionOrder = new TransactionOrder();
@@ -45,6 +45,10 @@ public class TransactionOrder {
 
     public void cancelTransaction() {
         status = TransactionStatus.CANCELED;
+    }
+
+    public void payTransaction() {
+        status = TransactionStatus.AWAITING_RECEPTION;
     }
 
     public void cancelTransactionFor(User user) {

@@ -11,12 +11,21 @@ import static org.mockito.Mockito.when;
 public class TransactionOrderTest {
 
     @Test
-    @DisplayName("A created transaction order has a PENDING status")
-    public void aTransactionWithPendingStatusTest() {
+    @DisplayName("A created transaction order has a AWAITING_PAYMENT status")
+    public void aTransactionWithAwaitingPaymentStatusTest() {
         TransactionOrder transactionOrder = new TransactionOrder();
 
-        assertEquals(TransactionStatus.PENDING, transactionOrder.getStatus());
+        assertEquals(TransactionStatus.AWAITING_PAYMENT, transactionOrder.getStatus());
 
+    }
+
+    @Test
+    @DisplayName("A payed transaction has a AWAITING_RECEPTION status")
+    public void aTransactionWithAwaitingReceptionStatusTest() {
+        TransactionOrder transactionOrder = new TransactionOrder();
+        transactionOrder.payTransaction();
+
+        assertEquals(TransactionStatus.AWAITING_RECEPTION, transactionOrder.getStatus());
     }
 
     @Test
@@ -36,6 +45,7 @@ public class TransactionOrderTest {
 
         assertEquals(TransactionStatus.CLOSED, transactionOrder.getStatus());
     }
+
 
     @Test
     @DisplayName("A transaction can be generated and saved on both parties from a market order")
