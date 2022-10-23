@@ -32,6 +32,7 @@ public class Criptop2pApplication {
 	CommandLineRunner run(UserService userService) {
 		return args -> {
 			userService.saveRole(new Role(null, "ROLE_USER"));
+
 			userService.saveUser(new UserRequestBody(
 					"Juan",
 					"Nieve",
@@ -41,6 +42,17 @@ public class Criptop2pApplication {
 					"4608738591410700747451",
 					"45821674"));
 			userService.addRoleToUser("jnieve@gmail.com", "ROLE_USER");
+
+			userService.saveUser(new UserRequestBody(
+					"Rhaenyra",
+					"Targaryen",
+					"rtargaryen@gmail.com",
+					"Password@1",
+					"Av. Oeste 2200",
+					"4608738591410700547451",
+					"45821674"));
+			userService.addRoleToUser("rtargaryen@gmail.com", "ROLE_USER");
+
 		};
 	}
 

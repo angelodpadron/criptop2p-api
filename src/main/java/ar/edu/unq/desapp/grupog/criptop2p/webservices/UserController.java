@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.webservices;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.EmailAlreadyTakenException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
@@ -38,6 +39,13 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<List<MarketOrderResponseBody>> getAllUserMarketOrders() {
         return ResponseEntity.ok().body(marketOrderService.getUserMarketOrders());
+    }
+
+    @Operation(summary = "Get all user transaction orders")
+    @GetMapping("/transactions/all")
+    @ResponseBody
+    public ResponseEntity<List<TransactionOrderResponseBody>> getAllUserTransactionOrders() {
+        return ResponseEntity.ok().body(userService.getAllTransactionOrders());
     }
 
 }

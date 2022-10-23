@@ -17,11 +17,11 @@ public class Mappers {
     public static TransactionOrderResponseBody transactionOrderEntityToResponseBody(TransactionOrder transactionOrder) {
         return new TransactionOrderResponseBody(
                 transactionOrder.getId(),
-                transactionOrder.getMarketOrder().getId(),
+                marketOrderEntityToResponseBody(transactionOrder.getMarketOrder()),
                 transactionOrder.getCreationDate(),
                 transactionOrder.getInterestedUser().getEmail(),
                 transactionOrder.getDealerUser().getEmail(),
-                transactionOrder.getStatus()
+                transactionOrder.getTransactionStatus().toString()
         );
     }
 

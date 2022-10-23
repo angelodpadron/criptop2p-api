@@ -1,11 +1,14 @@
 package ar.edu.unq.desapp.grupog.criptop2p.service;
 
+import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.EmailAlreadyTakenException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.Role;
+import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.RoleRepository;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.UserRepository;
+import ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional
@@ -59,6 +63,17 @@ public class UserService implements UserDetailsService {
         user.addRole(role);
 
     }
+
+    public List<TransactionOrderResponseBody> getAllTransactionOrders() {
+        List<TransactionOrder> transactionOrders = getUserLoggedIn().getTransactionOrders();
+        List<TransactionOrderResponseBody> transactionOrderResponseBodies = new ArrayList<>();
+
+        transactionOrders.forEach(transactionOrder -> transactionOrderResponseBodies.add(Mappers.transactionOrderEntityToResponseBody(transactionOrder)));
+
+
+        return transactionOrderResponseBodies;
+    }
+
     private User userRequestBodyToEntityMapper(UserRequestBody requestBody) {
         return modelMapper.map(requestBody, User.class);
     }
@@ -72,8 +87,8 @@ public class UserService implements UserDetailsService {
     private boolean emailAlreadyTaken(String email) {
         return userRepository.findByEmail(email) != null;
     }
-
     // spring security
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 

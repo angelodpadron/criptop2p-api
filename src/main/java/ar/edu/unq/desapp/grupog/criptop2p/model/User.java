@@ -1,19 +1,21 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
-import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "USERS")
 public class User {
     @Id
@@ -55,7 +57,6 @@ public class User {
         }
         return points / operations;
     }
-
     public void addRole(Role role) {
         roles.add(role);
     }
@@ -68,20 +69,15 @@ public class User {
         transactionOrders.add(transactionOrder);
     }
 
-    public TransactionOrder applyTo(MarketOrder marketOrder) throws MarketOrderException {
-        TransactionOrder transactionOrder = marketOrder.generateTransaction(this);
-        return transactionOrder;
-    }
-
-    public void cancelTransactionOrder(TransactionOrder transactionOrder) {
-        transactionOrder.cancelTransactionFor(this);
-    }
-
-    public void substratePoints(int points) {
-        this.points -= points;
-    }
-
     public void addPoints(int points) {
         this.points += points;
+    }
+
+    public void applyCancellationPenalty() {
+        points -= 20;
+    }
+
+    public boolean equals(User user) {
+        return Objects.equals(email, user.getEmail());
     }
 }

@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupog.criptop2p.dto;
 
-import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -17,8 +16,8 @@ import java.time.LocalDateTime;
 public class TransactionOrderResponseBody {
     @JsonProperty("transaction_id")
     private long transactionOrderId;
-    @JsonProperty("market_order_id")
-    private long marketOrderId;
+    @JsonProperty("market_order")
+    private MarketOrderResponseBody marketOrderResponseBody;
     @JsonProperty("creation_date")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime creationDate;
@@ -27,5 +26,5 @@ public class TransactionOrderResponseBody {
     @JsonProperty("dealer_user")
     private String dealerUser;
     @JsonProperty("transaction_status")
-    private TransactionStatus transactionStatus;
+    private String transactionStatus;
 }
