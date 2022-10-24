@@ -31,7 +31,10 @@ public class Criptop2pApplication {
 	@Bean
 	CommandLineRunner run(UserService userService) {
 		return args -> {
-			userService.saveRole(new Role(null, "ROLE_USER"));
+
+			String roleName = "ROLE_USER";
+
+			userService.saveRole(new Role(null, roleName));
 
 			userService.saveUser(new UserRequestBody(
 					"Juan",
@@ -41,7 +44,7 @@ public class Criptop2pApplication {
 					"Av. Norte 1234",
 					"4608738591410700747451",
 					"45821674"));
-			userService.addRoleToUser("jnieve@gmail.com", "ROLE_USER");
+			userService.addRoleToUser("jnieve@gmail.com", roleName);
 
 			userService.saveUser(new UserRequestBody(
 					"Rhaenyra",
@@ -51,7 +54,7 @@ public class Criptop2pApplication {
 					"Av. Oeste 2200",
 					"4608738591410700547451",
 					"45821674"));
-			userService.addRoleToUser("rtargaryen@gmail.com", "ROLE_USER");
+			userService.addRoleToUser("rtargaryen@gmail.com", roleName);
 
 		};
 	}

@@ -38,9 +38,7 @@ public class TransactionOrderService {
 
     public TransactionOrderResponseBody cancelTransactionOrder(Long transactionOrderId) throws TransactionOrderException, TransactionStatusException {
         User cancelingUser = userService.getUserLoggedIn();
-        TransactionOrder transactionOrder = transactionOrderRepository
-                .findById(transactionOrderId)
-                .orElseThrow(() -> new TransactionOrderException("The transaction could not be found"));
+        TransactionOrder transactionOrder = getTransactionOrder(transactionOrderId);
 
         transactionOrder.cancelTransactionFor(cancelingUser);
 
@@ -50,9 +48,7 @@ public class TransactionOrderService {
 
     public TransactionOrderResponseBody performTransferenceFor(Long transactionOrderId) throws TransactionOrderException, TransactionStatusException {
         User payingUser = userService.getUserLoggedIn();
-        TransactionOrder transactionOrder = transactionOrderRepository
-                .findById(transactionOrderId)
-                .orElseThrow(() -> new TransactionOrderException("The transaction could not be found"));
+        TransactionOrder transactionOrder = getTransactionOrder(transactionOrderId);
 
         transactionOrder.performTransferenceAs(payingUser);
 
@@ -62,13 +58,17 @@ public class TransactionOrderService {
 
     public TransactionOrderResponseBody confirmReceptionFor(Long transactionOrderId) throws TransactionOrderException, TransactionStatusException {
         User confirmingUser = userService.getUserLoggedIn();
-        TransactionOrder transactionOrder = transactionOrderRepository
-                .findById(transactionOrderId)
-                .orElseThrow(() -> new TransactionOrderException("The transaction could not be found"));
+        TransactionOrder transactionOrder = getTransactionOrder(transactionOrderId);
 
         transactionOrder.confirmReceptionAs(confirmingUser);
 
         return transactionOrderEntityToResponseBody(transactionOrder);
 
+    }
+
+    private TransactionOrder getTransactionOrder(Long transactionOrderId) throws TransactionOrderException {
+        return transactionOrderRepository
+                .findById(transactionOrderId)
+                .orElseThrow(() -> new TransactionOrderException("The transaction could not be found"));
     }
 }
