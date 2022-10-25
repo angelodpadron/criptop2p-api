@@ -1,11 +1,14 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
-import ar.edu.unq.desapp.grupog.criptop2p.exception.InvalidOperationPriceException;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.InvalidMarketPriceException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class MarketOrderTest {
 
@@ -17,7 +20,7 @@ public class MarketOrderTest {
 
         try {
             generateMarketOrderWithPrices(targetPrice, marketPrice);
-        } catch (InvalidOperationPriceException exception) {
+        } catch (InvalidMarketPriceException exception) {
             fail("Should not throw exception", exception);
         }
     }
@@ -29,7 +32,7 @@ public class MarketOrderTest {
         Double marketPricePlusFivePercent = marketPrice + marketPrice * 0.5;
         Double targetPrice = marketPricePlusFivePercent + 1;
 
-        Exception exception = assertThrows(InvalidOperationPriceException.class, () -> generateMarketOrderWithPrices(targetPrice, marketPrice));
+        Exception exception = assertThrows(InvalidMarketPriceException.class, () -> generateMarketOrderWithPrices(targetPrice, marketPrice));
 
         assertEquals("Target price exceeds allowable variation", exception.getMessage());
     }
@@ -41,12 +44,56 @@ public class MarketOrderTest {
         Double marketPriceLessFivePercent = marketPrice - marketPrice * 0.5;
         Double targetPrice = marketPriceLessFivePercent - 1;
 
-        Exception exception = assertThrows(InvalidOperationPriceException.class, () -> generateMarketOrderWithPrices(targetPrice, marketPrice));
+        Exception exception = assertThrows(InvalidMarketPriceException.class, () -> generateMarketOrderWithPrices(targetPrice, marketPrice));
 
         assertEquals("Target price exceeds allowable variation", exception.getMessage());
 
     }
 
+    @Test
+    @DisplayName("A market order is initially available")
+    public void aMarketOrderAnAvailableStatusTest() {
+        MarketOrder marketOrder = new MarketOrder();
+        assertTrue(marketOrder.getAvailable());
+    }
+
+    @Test
+    @DisplayName("A market order is unavailable when a user applies to it")
+    public void aMarketOrderGetsUnavailableTest() throws MarketOrderException {
+        MarketOrder marketOrder = ModelTestResources.getMarketOrder1();
+        User interestedUser = mock(User.class);
+        when(interestedUser.getEmail()).thenReturn("interested@email.com");
+
+        marketOrder.generateTransaction(interestedUser);
+
+        assertFalse(marketOrder.getAvailable());
+    }
+
+    @Test
+    @DisplayName("A market order generates a transaction order when a user apply to it")
+    public void aMarketOrderGeneratesATransactionOrderTest() throws MarketOrderException {
+        MarketOrder marketOrder = ModelTestResources.getMarketOrder1();
+        User interestedUser = ModelTestResources.getBasicUser1();
+        User dealerUser = ModelTestResources.getBasicUser2();
+
+        marketOrder.setCreator(dealerUser);
+        marketOrder.generateTransaction(interestedUser);
+
+        assertFalse(dealerUser.getTransactionOrders().isEmpty());
+        assertFalse(interestedUser.getTransactionOrders().isEmpty());
+
+    }
+
+    @Test
+    @DisplayName("A market order cannot generate a transaction for the user who created it")
+    public void aMarketOrderCannotGenerateATransactionForTheSameUserTest() {
+        MarketOrder marketOrder = ModelTestResources.getMarketOrder1();
+        User dealerUser = ModelTestResources.getBasicUser1();
+        marketOrder.setCreator(dealerUser);
+
+        assertThrows(MarketOrderException.class, () -> marketOrder.generateTransaction(dealerUser));
+
+    }
 
     private MarketOrder generateMarketOrderWithPrices(Double targetPrice, Double marketPrice) throws MarketOrderException {
         return new MarketOrder(null, null, null, null, marketPrice, targetPrice, null, null);

@@ -1,7 +1,8 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
 public enum TransactionStatus {
-    PENDING,
-    CLOSED,
-    CANCELED
+    AWAITING_TRANSFERENCE,
+    AWAITING_RECEPTION,
+    CANCELLED,
+    CLOSED
 }

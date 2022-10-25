@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.exception;
 
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -37,6 +39,18 @@ public class ControllerAdvisor {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     public String handleConstraints(ConstraintViolationException exception) {
+        return exception.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MarketOrderException.class)
+    public String handleInvalidMarketOrder(MarketOrderException exception) {
+        return exception.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(TransactionOrderException.class)
+    public String handleInvalidTransactionOrder(TransactionOrderException exception) {
         return exception.getMessage();
     }
 

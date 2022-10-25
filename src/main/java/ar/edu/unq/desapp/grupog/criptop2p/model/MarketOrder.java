@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
-import ar.edu.unq.desapp.grupog.criptop2p.exception.InvalidOperationPriceException;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.InvalidMarketPriceException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,9 +23,11 @@ public class MarketOrder {
     private Double marketPrice;
     private Double targetPrice;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
     private User creator;
     @Enumerated(EnumType.STRING)
     private OperationType operation;
+    private Boolean available = true;
     @Transient
     private Double priceMarginAllowed = 0.5;
 
@@ -42,18 +44,27 @@ public class MarketOrder {
         this.cryptocurrency = cryptocurrency;
         this.nominalAmount = nominalAmount;
         this.marketPrice = marketPrice;
+        this.creator = creator;
+        this.operation = operation;
+
         if (targetPriceInRange(marketPrice, targetPrice)) {
             this.targetPrice = targetPrice;
         } else {
-            throw new InvalidOperationPriceException("Target price exceeds allowable variation");
+            throw new InvalidMarketPriceException("Target price exceeds allowable variation");
         }
-        this.creator = creator;
-        this.operation = operation;
     }
 
-    public boolean targetPriceInRange(Double marketPrice, Double targetPrice) {
+    private boolean targetPriceInRange(Double marketPrice, Double targetPrice) {
         Double maxAllowedPrice = marketPrice + marketPrice * priceMarginAllowed;
         Double minAllowedPrice = marketPrice - marketPrice * priceMarginAllowed;
         return targetPrice >= minAllowedPrice && targetPrice <= maxAllowedPrice;
+    }
+
+    public TransactionOrder generateTransaction(User interestedUser) throws MarketOrderException {
+        if (interestedUser.getEmail().equals(creator.getEmail())) {
+            throw new MarketOrderException("User cannot apply to their own market order");
+        }
+        this.available = false;
+        return TransactionOrder.generateFor(this, interestedUser);
     }
 }
