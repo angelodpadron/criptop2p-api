@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
-import ar.edu.unq.desapp.grupog.criptop2p.exception.InvalidOperationPriceException;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.InvalidMarketPriceException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ public class MarketOrderTest {
 
         try {
             generateMarketOrderWithPrices(targetPrice, marketPrice);
-        } catch (InvalidOperationPriceException exception) {
+        } catch (InvalidMarketPriceException exception) {
             fail("Should not throw exception", exception);
         }
     }
@@ -32,7 +32,7 @@ public class MarketOrderTest {
         Double marketPricePlusFivePercent = marketPrice + marketPrice * 0.5;
         Double targetPrice = marketPricePlusFivePercent + 1;
 
-        Exception exception = assertThrows(InvalidOperationPriceException.class, () -> generateMarketOrderWithPrices(targetPrice, marketPrice));
+        Exception exception = assertThrows(InvalidMarketPriceException.class, () -> generateMarketOrderWithPrices(targetPrice, marketPrice));
 
         assertEquals("Target price exceeds allowable variation", exception.getMessage());
     }
@@ -44,7 +44,7 @@ public class MarketOrderTest {
         Double marketPriceLessFivePercent = marketPrice - marketPrice * 0.5;
         Double targetPrice = marketPriceLessFivePercent - 1;
 
-        Exception exception = assertThrows(InvalidOperationPriceException.class, () -> generateMarketOrderWithPrices(targetPrice, marketPrice));
+        Exception exception = assertThrows(InvalidMarketPriceException.class, () -> generateMarketOrderWithPrices(targetPrice, marketPrice));
 
         assertEquals("Target price exceeds allowable variation", exception.getMessage());
 

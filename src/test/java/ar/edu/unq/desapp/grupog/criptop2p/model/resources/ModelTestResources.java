@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model.resources;
 
-import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.OperationType;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;

@@ -2,7 +2,7 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.MarketOrderRepository;

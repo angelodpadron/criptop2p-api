@@ -1,7 +1,8 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model.status;
 
-import ar.edu.unq.desapp.grupog.criptop2p.exception.TransactionOrderException;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.TransactionStatusException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.IllegalTransactionOperationException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionStatusException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionStatus;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
@@ -22,7 +23,9 @@ public abstract class TransactionStatusHandler {
 
         return handlerList
                 .stream()
-                .filter(handler -> handler.canHandleStatus(transactionStatus)).findAny().orElseThrow(() -> new TransactionStatusException("Nonexistent status"));
+                .filter(handler -> handler.canHandleStatus(transactionStatus))
+                .findAny()
+                .orElseThrow(() -> new TransactionStatusException("Cannot instantiate a handler for the state \"." + transactionStatus + "\""));
 
     }
 
@@ -40,7 +43,7 @@ public abstract class TransactionStatusHandler {
 
     protected void checkIfUserCanOperateTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
         if (!(user.equals(transactionOrder.getDealerUser()) || user.equals(transactionOrder.getInterestedUser()))) {
-            throw new TransactionOrderException("Transaction cannot be operated by unrelated users");
+            throw new IllegalTransactionOperationException("Transaction cannot be operated by unrelated users");
         }
     }
 }

@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model.status;
 
-import ar.edu.unq.desapp.grupog.criptop2p.exception.TransactionOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionCancelledException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionStatus;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
@@ -28,7 +29,7 @@ public class CancelledStatusHandler extends TransactionStatusHandler {
     }
 
     private void throwCancelledTransactionException() throws TransactionOrderException {
-        throw new TransactionOrderException("The transaction has been cancelled and cannot be processed");
+        throw new TransactionCancelledException("The transaction has been cancelled and cannot be processed");
 
     }
 }

@@ -2,13 +2,15 @@ package ar.edu.unq.desapp.grupog.criptop2p.service.resources;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.OperationAmountResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Mappers {
 
@@ -54,6 +56,10 @@ public class Mappers {
                 marketOrderRequestBody.getTargetPrice(),
                 user,
                 marketOrderRequestBody.getOperation());
+    }
+
+    public static OperationAmountResponseBody toOperationAmountResponseBody(Double usdAmount, Double pesosAmount, List<TransactionOrderResponseBody> transactionsDetails) {
+        return new OperationAmountResponseBody(usdAmount, pesosAmount, transactionsDetails);
     }
 
 

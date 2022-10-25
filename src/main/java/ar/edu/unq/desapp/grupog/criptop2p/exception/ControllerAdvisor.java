@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.exception;
 
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;

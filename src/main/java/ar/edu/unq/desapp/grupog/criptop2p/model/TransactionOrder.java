@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
-import ar.edu.unq.desapp.grupog.criptop2p.exception.TransactionOrderException;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.TransactionStatusException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionStatusException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.status.TransactionStatusHandler;
 import lombok.AllArgsConstructor;
 import lombok.Data;

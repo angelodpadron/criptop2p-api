@@ -1,9 +1,9 @@
 package ar.edu.unq.desapp.grupog.criptop2p.service;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.MarketOrderException;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.TransactionOrderException;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.TransactionStatusException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionStatusException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;

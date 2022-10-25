@@ -1,8 +1,8 @@
 package ar.edu.unq.desapp.grupog.criptop2p.webservices;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.TransactionOrderException;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.TransactionStatusException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionStatusException;
 import ar.edu.unq.desapp.grupog.criptop2p.service.TransactionOrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

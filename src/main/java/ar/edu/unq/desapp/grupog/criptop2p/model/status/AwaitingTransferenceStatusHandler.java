@@ -1,6 +1,8 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model.status;
 
-import ar.edu.unq.desapp.grupog.criptop2p.exception.TransactionOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.IllegalTransactionOperationException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransferIsPendingException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.OperationType;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionStatus;
@@ -13,7 +15,6 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
         return status == TransactionStatus.AWAITING_TRANSFERENCE;
     }
 
-    //    @Override
     public void handleTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
         checkIfUserCanOperateTransaction(transactionOrder, user);
 
@@ -25,7 +26,7 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
                 transactionOrder.setTransactionStatus(TransactionStatus.AWAITING_RECEPTION);
                 transactionOrder.setTransactionStatus(transactionOrder.getTransactionStatus());
             } else {
-                throw new TransactionOrderException("Only the dealer user can perform a transference of a purchase operation");
+                throw new IllegalTransactionOperationException("Only the dealer user can perform a transference of a purchase operation");
             }
         }
 
@@ -35,7 +36,7 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
                 transactionOrder.setTransactionStatus(TransactionStatus.AWAITING_RECEPTION);
                 transactionOrder.setTransactionStatus(transactionOrder.getTransactionStatus());
             } else {
-                throw new TransactionOrderException("Only the interested user can perform a transference of a sell operation");
+                throw new IllegalTransactionOperationException("Only the interested user can perform a transference of a sell operation");
             }
         }
     }
@@ -47,7 +48,7 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
 
     @Override
     public void confirmReceptionFor(TransactionOrder transactionOrder, User confirmingUser) throws TransactionOrderException {
-        throw new TransactionOrderException("Reception cannot be confirmed without prior transference");
+        throw new TransferIsPendingException("Reception cannot be confirmed without prior transference");
     }
 
 
