@@ -2,7 +2,10 @@ package ar.edu.unq.desapp.grupog.criptop2p.service.resources;
 
 import java.util.List;
 
-public class Resources {
+public final class Resources {
+
+    private Resources() {
+    }
 
     public static final List<String> CRYPTO_SYMBOLS = List.of(
             "ALICEUSDT",

@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class JwtUtil {
+public final class JwtUtil {
+
+    private JwtUtil() {
+    }
 
     private static final String JWT_SECRET = "no_so_secret";
     private static final Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET.getBytes());

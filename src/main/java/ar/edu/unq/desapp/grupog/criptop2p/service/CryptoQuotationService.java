@@ -7,8 +7,8 @@ import ar.edu.unq.desapp.grupog.criptop2p.service.resources.BinanceClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +17,6 @@ public class CryptoQuotationService {
 
     private final BinanceClient binanceAPIClient;
     private final BCRAClient bcraClient;
-//    private final CryptoQuotationRepository cryptoQuotationRepository;
 
 
     public List<CryptoQuotation> getAllQuotations() {
@@ -32,18 +31,12 @@ public class CryptoQuotationService {
 
 
     private List<CryptoQuotation> mapToCryptoQuotationList(List<CryptoQuotationResponseBody> responseBodies) {
-        List<CryptoQuotation> cryptoQuotations = new ArrayList<>();
         Double currentUSDARSQuotation = bcraClient.getLastUSDARSQuotation();
 
-        for (CryptoQuotationResponseBody responseBody : responseBodies) {
-            CryptoQuotation cryptoQuotation = mapToCryptoQuotation(responseBody, currentUSDARSQuotation);
-            cryptoQuotations.add(cryptoQuotation);
-
-            // For now, the repository is used only to generate the id of the entities
-//            cryptoQuotationRepository.save(cryptoQuotation);
-        }
-
-        return cryptoQuotations;
+        return responseBodies
+                .stream()
+                .map(responseBody -> mapToCryptoQuotation(responseBody, currentUSDARSQuotation))
+                .collect(Collectors.toList());
     }
 
     private CryptoQuotation mapToCryptoQuotation(CryptoQuotationResponseBody responseBody, Double currentUSDARSQuotation) {

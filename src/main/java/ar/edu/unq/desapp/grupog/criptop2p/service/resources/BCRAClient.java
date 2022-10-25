@@ -20,14 +20,14 @@ public class BCRAClient {
     private final RestTemplate restTemplate;
 
     @Value("${bcra.token}")
-    private String BcraToken;
+    private String bcraToken;
 
 
     public Double getLastUSDARSQuotation() {
 
         // Configure headers with authentication token
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(BcraToken);
+        headers.setBearerAuth(bcraToken);
         HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
 
         // Get the last quotation from the USD to ARS exchange rate list
@@ -43,7 +43,7 @@ public class BCRAClient {
         // Exchange method may return null
         if (usdQuotations.isPresent()) {
             List<USDQuotationResponseBody> quotationList = usdQuotations.get();
-            if (quotationList.size() > 0) {
+            if (!quotationList.isEmpty()) {
                 return quotationList.get(quotationList.size() - 1).getValue();
             }
         }

@@ -20,22 +20,22 @@ public class TransactionOrderController {
     @Operation(summary = "Cancel a transaction order with a given id")
     @PostMapping(path = "/cancel/{transaction_id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void cancelTransactionOrder(@PathVariable Long transaction_id) throws TransactionOrderException, TransactionStatusException {
-        transactionOrderService.cancelTransactionOrder(transaction_id);
+    public void cancelTransactionOrder(@PathVariable("transaction_id") Long transactionId) throws TransactionOrderException, TransactionStatusException {
+        transactionOrderService.cancelTransactionOrder(transactionId);
     }
 
     @Operation(summary = "Perform the transference of a transaction order")
     @PostMapping(path = "/transfer/{transaction_id}")
     @ResponseBody
-    public ResponseEntity<TransactionOrderResponseBody> performTransferenceFor(@PathVariable Long transaction_id) throws TransactionOrderException, TransactionStatusException {
-        return ResponseEntity.ok().body(transactionOrderService.performTransferenceFor(transaction_id));
+    public ResponseEntity<TransactionOrderResponseBody> performTransferenceFor(@PathVariable("transaction_id") Long transactionId) throws TransactionOrderException, TransactionStatusException {
+        return ResponseEntity.ok().body(transactionOrderService.performTransferenceFor(transactionId));
     }
 
     @Operation(summary = "Perform the transference of a transaction order")
     @PostMapping(path = "/confirm/{transaction_id}")
     @ResponseBody
-    public ResponseEntity<TransactionOrderResponseBody> confirmReceptionFor(@PathVariable Long transaction_id) throws TransactionOrderException, TransactionStatusException {
-        return ResponseEntity.ok().body(transactionOrderService.confirmReceptionFor(transaction_id));
+    public ResponseEntity<TransactionOrderResponseBody> confirmReceptionFor(@PathVariable("transaction_id") Long transactionId) throws TransactionOrderException, TransactionStatusException {
+        return ResponseEntity.ok().body(transactionOrderService.confirmReceptionFor(transactionId));
     }
 
 }

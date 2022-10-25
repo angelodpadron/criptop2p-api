@@ -12,7 +12,10 @@ import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Mappers {
+public final class Mappers {
+
+    private Mappers() {
+    }
 
     // Transaction order mappings
 
