@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupog.criptop2p.service.resources;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.USDQuotationResponseBody;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,12 +19,15 @@ public class BCRAClient {
 
     private final RestTemplate restTemplate;
 
+    @Value("${bcra.token}")
+    private String BcraToken;
+
 
     public Double getLastUSDARSQuotation() {
 
         // Configure headers with authentication token
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(Resources.BCRA_TOKEN);
+        headers.setBearerAuth(BcraToken);
         HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
 
         // Get the last quotation from the USD to ARS exchange rate list
