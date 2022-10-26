@@ -54,4 +54,10 @@ public class ControllerAdvisor {
         return exception.getMessage();
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidConsultationDatesException.class)
+    public String handleInvalidConsultationDates(InvalidConsultationDatesException exception) {
+        return exception.getMessage();
+    }
+
 }

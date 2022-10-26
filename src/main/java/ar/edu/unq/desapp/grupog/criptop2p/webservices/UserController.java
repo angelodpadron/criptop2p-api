@@ -5,6 +5,7 @@ import ar.edu.unq.desapp.grupog.criptop2p.dto.OperationAmountResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.EmailAlreadyTakenException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.InvalidConsultationDatesException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.service.MarketOrderService;
 import ar.edu.unq.desapp.grupog.criptop2p.service.UserService;
@@ -56,7 +57,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<OperationAmountResponseBody> getUserOperationAmount(
             @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
-            @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate) {
+            @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate) throws InvalidConsultationDatesException {
 
         return ResponseEntity.ok().body(userService.getOperationsAmountBetweenDates(fromDate, toDate));
 
