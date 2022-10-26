@@ -31,7 +31,7 @@ public class TransactionOrderController {
         return ResponseEntity.ok().body(transactionOrderService.performTransferenceFor(transactionId));
     }
 
-    @Operation(summary = "Perform the transference of a transaction order")
+    @Operation(summary = "Confirm the reception of a transaction order")
     @PostMapping(path = "/confirm/{transaction_id}")
     @ResponseBody
     public ResponseEntity<TransactionOrderResponseBody> confirmReceptionFor(@PathVariable("transaction_id") Long transactionId) throws TransactionOrderException, TransactionStatusException {
