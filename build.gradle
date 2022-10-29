@@ -7,13 +7,6 @@ plugins {
 	id "jacoco"
 }
 
-sonarqube {
-	properties {
-		property "sonar.projectKey", "angelodpadron_criptop2p-api"
-		property "sonar.organization", "angelodpadron"
-		property "sonar.host.url", "https://sonarcloud.io"
-	}
-}
 
 group = 'ar.edu.unq.desapp.grupog'
 version = '0.0.1-SNAPSHOT'
@@ -47,10 +40,33 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+test {
+	finalizedBy jacocoTestReport
+}
+
 jacocoTestReport {
+	dependsOn test
 	reports {
 		xml.enabled true
+		html.outputLocation = layout.buildDirectory.dir('jacoco-html')
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+			        "**/config/*",
+					"**/exception/*",
+					"**/dto/*",
+					"**/resources/*"
+			])
+		}))
 	}
 }
 
-test.finalizedBy jacocoTestReport
+sonarqube {
+	properties {
+		property "sonar.projectKey", "angelodpadron_criptop2p-api"
+		property "sonar.organization", "angelodpadron"
+		property "sonar.host.url", "https://sonarcloud.io"
+	}
+}
+
