@@ -22,7 +22,7 @@ public class AwaitingReceptionStatusHandler extends TransactionStatusHandler {
 
         if (operation == OperationType.PURCHASE) {
             // the interested user is the one who has to confirm reception
-            if (user.equals(transactionOrder.getInterestedUser())) {
+            if (user.hasSameEmail(transactionOrder.getInterestedUser())) {
                 transactionOrder.setTransactionStatus(TransactionStatus.CLOSED);
                 transactionOrder.setTransactionStatus(transactionOrder.getTransactionStatus());
 
@@ -33,7 +33,7 @@ public class AwaitingReceptionStatusHandler extends TransactionStatusHandler {
 
         if (operation == OperationType.SELL) {
             // the dealer user is the one who has to confirm reception
-            if (user.equals(transactionOrder.getDealerUser())) {
+            if (user.hasSameEmail(transactionOrder.getDealerUser())) {
                 transactionOrder.setTransactionStatus(TransactionStatus.CLOSED);
                 transactionOrder.setTransactionStatus(transactionOrder.getTransactionStatus());
             } else {

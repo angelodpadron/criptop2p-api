@@ -42,7 +42,7 @@ public abstract class TransactionStatusHandler {
     }
 
     protected void checkIfUserCanOperateTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
-        if (!(user.equals(transactionOrder.getDealerUser()) || user.equals(transactionOrder.getInterestedUser()))) {
+        if (!(user.hasSameEmail(transactionOrder.getDealerUser()) || user.hasSameEmail(transactionOrder.getInterestedUser()))) {
             throw new IllegalTransactionOperationException("Transaction cannot be operated by unrelated users");
         }
     }

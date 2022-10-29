@@ -13,14 +13,6 @@ import static org.mockito.Mockito.when;
 public class UserTest {
 
     @Test
-    @DisplayName("The points of a user can be modified")
-    void thePointsOfAUserCanBeModifiedTest() {
-        User user = new User();
-        user.setPoints(5);
-        assertEquals(5, user.getPoints());
-    }
-
-    @Test
     @DisplayName("A user initially has zero operations")
     void aUserInitiallyHasZeroOperationsTest() {
         User user = new User();
@@ -121,6 +113,26 @@ public class UserTest {
         user.addTransactionOrder(transactionOrder);
 
         assertTrue(user.getTransactionOrders().contains(transactionOrder));
+    }
+
+    @Test
+    @DisplayName("A user can check if another user have the same email address")
+    void twoUsersWithTheSameEmailTest() {
+        User user1 = new User();
+        User user2 = new User();
+        String emailAddress = "something@email.com";
+        user1.setEmail(emailAddress);
+        user2.setEmail(emailAddress);
+
+        assertTrue(user1.hasSameEmail(user1));
+    }
+
+    @Test
+    @DisplayName("The points of a user can be modified")
+    void thePointsOfAUserCanBeModifiedTest() {
+        User user = new User();
+        user.setPoints(5);
+        assertEquals(5, user.getPoints());
     }
 
 }

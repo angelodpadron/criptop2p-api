@@ -22,7 +22,7 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
 
         if (operation == OperationType.PURCHASE) {
             // only the dealer user can perform the transference
-            if (user.equals(transactionOrder.getDealerUser())) {
+            if (user.hasSameEmail(transactionOrder.getDealerUser())) {
                 transactionOrder.setTransactionStatus(TransactionStatus.AWAITING_RECEPTION);
                 transactionOrder.setTransactionStatus(transactionOrder.getTransactionStatus());
             } else {
@@ -32,7 +32,7 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
 
         if (operation == OperationType.SELL) {
             // only the interested user can perform the transference
-            if (user.equals(transactionOrder.getInterestedUser())) {
+            if (user.hasSameEmail(transactionOrder.getInterestedUser())) {
                 transactionOrder.setTransactionStatus(TransactionStatus.AWAITING_RECEPTION);
                 transactionOrder.setTransactionStatus(transactionOrder.getTransactionStatus());
             } else {
