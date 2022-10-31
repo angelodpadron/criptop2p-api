@@ -1,13 +1,13 @@
 package ar.edu.unq.desapp.grupog.criptop2p.service;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.PriceExceedsOperationLimitException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionStatusException;
+import ar.edu.unq.desapp.grupog.criptop2p.model.CryptoQuotation;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
-import ar.edu.unq.desapp.grupog.criptop2p.persistence.MarketOrderRepository;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.TransactionOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,19 +21,20 @@ import static ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers.trans
 @Transactional
 public class TransactionOrderService {
     private final TransactionOrderRepository transactionOrderRepository;
-    private final MarketOrderRepository marketOrderRepository;
+    private final MarketOrderService marketOrderService;
+    private final CryptoQuotationService cryptoQuotationService;
     private final UserService userService;
 
-    public TransactionOrderResponseBody addTransactionOrderToUser(Long marketOrderId) throws TransactionOrderException, MarketOrderException {
+    public TransactionOrderResponseBody addTransactionOrderToUser(Long marketOrderId) throws TransactionOrderException, PriceExceedsOperationLimitException {
         User interestedUser = userService.getUserLoggedIn();
-        MarketOrder marketOrder = marketOrderRepository
-                .findById(marketOrderId)
-                .orElseThrow(() -> new TransactionOrderException("Market order not found"));
+        MarketOrder marketOrder = marketOrderService.getMarketOrder(marketOrderId);
+        CryptoQuotation cryptoQuotation = cryptoQuotationService.getQuotation(marketOrder.getCryptocurrency());
 
-        TransactionOrder transactionOrder = marketOrder.generateTransaction(interestedUser);
+        TransactionOrder transactionOrder = marketOrder.generateTransactionFor(interestedUser, cryptoQuotation.getPriceInUSD());
         transactionOrderRepository.save(transactionOrder);
 
         return transactionOrderEntityToResponseBody(transactionOrder);
+
     }
 
     public TransactionOrderResponseBody cancelTransactionOrder(Long transactionOrderId) throws TransactionOrderException, TransactionStatusException {
@@ -50,7 +51,7 @@ public class TransactionOrderService {
         User payingUser = userService.getUserLoggedIn();
         TransactionOrder transactionOrder = getTransactionOrder(transactionOrderId);
 
-        transactionOrder.performTransferenceAs(payingUser);
+        transactionOrder.notifyTransferenceAs(payingUser);
 
         return transactionOrderEntityToResponseBody(transactionOrder);
 
@@ -60,7 +61,7 @@ public class TransactionOrderService {
         User confirmingUser = userService.getUserLoggedIn();
         TransactionOrder transactionOrder = getTransactionOrder(transactionOrderId);
 
-        transactionOrder.confirmReceptionAs(confirmingUser);
+        transactionOrder.notifyReceptionAs(confirmingUser);
 
         return transactionOrderEntityToResponseBody(transactionOrder);
 

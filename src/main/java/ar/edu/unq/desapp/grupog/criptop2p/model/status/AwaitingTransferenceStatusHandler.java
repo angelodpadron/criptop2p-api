@@ -15,7 +15,7 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
         return status == TransactionStatus.AWAITING_TRANSFERENCE;
     }
 
-    public void handleTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
+    private void handleTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
         checkIfUserCanOperateTransaction(transactionOrder, user);
 
         OperationType operation = transactionOrder.getMarketOrder().getOperation();
@@ -42,12 +42,12 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
     }
 
     @Override
-    public void performTransferenceFor(TransactionOrder transactionOrder, User payingUser) throws TransactionOrderException {
-        handleTransaction(transactionOrder, payingUser);
+    public void notifyTransferenceFor(TransactionOrder transactionOrder, User userWhoNotifiesTransference) throws TransactionOrderException {
+        handleTransaction(transactionOrder, userWhoNotifiesTransference);
     }
 
     @Override
-    public void confirmReceptionFor(TransactionOrder transactionOrder, User confirmingUser) throws TransactionOrderException {
+    public void notifyReceptionFor(TransactionOrder transactionOrder, User userWhoNotifiesReception) throws TransactionOrderException {
         throw new TransferIsPendingException("Reception cannot be confirmed without prior transference");
     }
 

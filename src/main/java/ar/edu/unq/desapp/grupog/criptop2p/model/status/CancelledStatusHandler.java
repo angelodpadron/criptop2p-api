@@ -10,7 +10,7 @@ public class CancelledStatusHandler extends TransactionStatusHandler {
 
     @Override
     public boolean canHandleStatus(TransactionStatus status) {
-        return status == TransactionStatus.CANCELLED;
+        return status == TransactionStatus.CANCELLED || status == TransactionStatus.CANCELLED_BY_SYSTEM;
     }
 
     @Override
@@ -19,12 +19,12 @@ public class CancelledStatusHandler extends TransactionStatusHandler {
     }
 
     @Override
-    public void performTransferenceFor(TransactionOrder transactionOrder, User payingUser) throws TransactionOrderException {
+    public void notifyTransferenceFor(TransactionOrder transactionOrder, User userWhoNotifiesTransference) throws TransactionOrderException {
         throwCancelledTransactionException();
     }
 
     @Override
-    public void confirmReceptionFor(TransactionOrder transactionOrder, User confirmingUser) throws TransactionOrderException {
+    public void notifyReceptionFor(TransactionOrder transactionOrder, User userWhoNotifiesReception) throws TransactionOrderException {
         throwCancelledTransactionException();
     }
 

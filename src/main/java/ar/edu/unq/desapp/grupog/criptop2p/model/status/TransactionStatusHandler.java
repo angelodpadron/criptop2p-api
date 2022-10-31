@@ -31,9 +31,9 @@ public abstract class TransactionStatusHandler {
 
     public abstract boolean canHandleStatus(TransactionStatus status);
 
-    public abstract void performTransferenceFor(TransactionOrder transactionOrder, User payingUser) throws TransactionOrderException;
+    public abstract void notifyTransferenceFor(TransactionOrder transactionOrder, User userWhoNotifiesTransference) throws TransactionOrderException;
 
-    public abstract void confirmReceptionFor(TransactionOrder transactionOrder, User confirmingUser) throws TransactionOrderException;
+    public abstract void notifyReceptionFor(TransactionOrder transactionOrder, User userWhoNotifiesReception) throws TransactionOrderException;
 
     public void cancelTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
         checkIfUserCanOperateTransaction(transactionOrder, user);

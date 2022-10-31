@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.exception;
 
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.PriceExceedsOperationLimitException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -59,5 +60,12 @@ public class ControllerAdvisor {
     public String handleInvalidConsultationDates(InvalidConsultationDatesException exception) {
         return exception.getMessage();
     }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(PriceExceedsOperationLimitException.class)
+    public String handlePriceExceedsOperationLimitException(PriceExceedsOperationLimitException exception) {
+        return exception.getMessage();
+    }
+
 
 }

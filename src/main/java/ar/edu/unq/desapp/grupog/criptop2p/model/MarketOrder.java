@@ -2,6 +2,9 @@ package ar.edu.unq.desapp.grupog.criptop2p.model;
 
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.InvalidMarketPriceException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.PriceExceedsOperationLimitException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.MarketOrderAlreadyTakenException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -54,17 +57,40 @@ public class MarketOrder {
         }
     }
 
+    public TransactionOrder generateTransactionFor(User interestedUser, Double currentQuotation) throws TransactionOrderException, PriceExceedsOperationLimitException {
+        checkIfUserCanApply(interestedUser);
+
+        TransactionOrder transactionOrder = new TransactionOrder(this, interestedUser);
+        creator.addTransactionOrder(transactionOrder);
+        interestedUser.addTransactionOrder(transactionOrder);
+
+        checkIfTargetPriceIsValidForOperation(currentQuotation, transactionOrder);
+
+        available = false;
+
+        return transactionOrder;
+    }
+
+    private void checkIfUserCanApply(User interestedUser) throws TransactionOrderException {
+        if (!available) {
+            throw new MarketOrderAlreadyTakenException("The market order was already taken");
+        }
+        if (interestedUser.hasSameEmail(creator)) {
+            throw new TransactionOrderException("A user cannot apply for is own market order");
+        }
+    }
+
+    private void checkIfTargetPriceIsValidForOperation(Double currentQuotation, TransactionOrder transactionOrder) throws PriceExceedsOperationLimitException {
+        if (!operation.priceIsValid(currentQuotation, targetPrice)) {
+            transactionOrder.cancelTransactionAsSystem();
+            throw new PriceExceedsOperationLimitException("The market order price exceeds the limit for the type of operation");
+        }
+    }
+
     private boolean targetPriceInRange(Double marketPrice, Double targetPrice) {
         Double maxAllowedPrice = marketPrice + marketPrice * priceMarginAllowed;
         Double minAllowedPrice = marketPrice - marketPrice * priceMarginAllowed;
         return targetPrice >= minAllowedPrice && targetPrice <= maxAllowedPrice;
     }
 
-    public TransactionOrder generateTransaction(User interestedUser) throws MarketOrderException {
-        if (interestedUser.getEmail().equals(creator.getEmail())) {
-            throw new MarketOrderException("User cannot apply to their own market order");
-        }
-        this.available = false;
-        return TransactionOrder.generateFor(this, interestedUser);
-    }
 }

@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.MarketOrderRepository;
@@ -31,6 +32,10 @@ public class MarketOrderService {
         marketOrderRepository.save(marketOrder);
         user.addMarketOrder(marketOrder);
 
+    }
+
+    public MarketOrder getMarketOrder(Long marketOrderId) throws TransactionOrderException {
+        return marketOrderRepository.findById(marketOrderId).orElseThrow(() -> new TransactionOrderException("Market order not found"));
     }
 
     public List<MarketOrderResponseBody> getMarketOrders() {

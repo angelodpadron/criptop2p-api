@@ -20,8 +20,8 @@ public class TransactionOrderController {
     @Operation(summary = "Cancel a transaction order with a given id")
     @PostMapping(path = "/cancel/{transaction_id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void cancelTransactionOrder(@PathVariable("transaction_id") Long transactionId) throws TransactionOrderException, TransactionStatusException {
-        transactionOrderService.cancelTransactionOrder(transactionId);
+    public ResponseEntity<TransactionOrderResponseBody> cancelTransactionOrder(@PathVariable("transaction_id") Long transactionId) throws TransactionOrderException, TransactionStatusException {
+        return ResponseEntity.ok().body(transactionOrderService.cancelTransactionOrder(transactionId));
     }
 
     @Operation(summary = "Perform the transference of a transaction order")

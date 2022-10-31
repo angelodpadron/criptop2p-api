@@ -15,7 +15,7 @@ public class AwaitingReceptionStatusHandler extends TransactionStatusHandler {
         return status == TransactionStatus.AWAITING_RECEPTION;
     }
 
-    public void handleTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
+    private void handleTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
         checkIfUserCanOperateTransaction(transactionOrder, user);
 
         OperationType operation = transactionOrder.getMarketOrder().getOperation();
@@ -43,12 +43,12 @@ public class AwaitingReceptionStatusHandler extends TransactionStatusHandler {
     }
 
     @Override
-    public void confirmReceptionFor(TransactionOrder transactionOrder, User confirmingUser) throws TransactionOrderException {
-        handleTransaction(transactionOrder, confirmingUser);
+    public void notifyReceptionFor(TransactionOrder transactionOrder, User userWhoNotifiesReception) throws TransactionOrderException {
+        handleTransaction(transactionOrder, userWhoNotifiesReception);
     }
 
     @Override
-    public void performTransferenceFor(TransactionOrder transactionOrder, User payingUser) throws TransactionOrderException {
+    public void notifyTransferenceFor(TransactionOrder transactionOrder, User userWhoNotifiesTransference) throws TransactionOrderException {
         throw new TransferAlreadyMadeException("The transfer has already been made");
     }
 
