@@ -3,6 +3,8 @@ package ar.edu.unq.desapp.grupog.criptop2p.exception;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.PriceExceedsOperationLimitException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.user.EmailAlreadyTakenException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.user.InvalidConsultationDatesException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;

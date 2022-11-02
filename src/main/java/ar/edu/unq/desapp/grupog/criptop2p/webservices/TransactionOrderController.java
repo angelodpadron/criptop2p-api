@@ -24,14 +24,14 @@ public class TransactionOrderController {
         return ResponseEntity.ok().body(transactionOrderService.cancelTransactionOrder(transactionId));
     }
 
-    @Operation(summary = "Perform the transference of a transaction order")
+    @Operation(summary = "Notify the transference of a transaction order")
     @PostMapping(path = "/transfer/{transaction_id}")
     @ResponseBody
     public ResponseEntity<TransactionOrderResponseBody> performTransferenceFor(@PathVariable("transaction_id") Long transactionId) throws TransactionOrderException, TransactionStatusException {
         return ResponseEntity.ok().body(transactionOrderService.performTransferenceFor(transactionId));
     }
 
-    @Operation(summary = "Confirm the reception of a transaction order")
+    @Operation(summary = "Notify the reception of a transaction order")
     @PostMapping(path = "/confirm/{transaction_id}")
     @ResponseBody
     public ResponseEntity<TransactionOrderResponseBody> confirmReceptionFor(@PathVariable("transaction_id") Long transactionId) throws TransactionOrderException, TransactionStatusException {
