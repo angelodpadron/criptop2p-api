@@ -77,7 +77,7 @@ public class User {
         points -= 20;
     }
 
-    public boolean equals(User user) {
+    public boolean hasSameEmail(User user) {
         return Objects.equals(email, user.getEmail());
     }
 }

@@ -15,14 +15,14 @@ public class AwaitingReceptionStatusHandler extends TransactionStatusHandler {
         return status == TransactionStatus.AWAITING_RECEPTION;
     }
 
-    public void handleTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
+    private void handleTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
         checkIfUserCanOperateTransaction(transactionOrder, user);
 
         OperationType operation = transactionOrder.getMarketOrder().getOperation();
 
         if (operation == OperationType.PURCHASE) {
             // the interested user is the one who has to confirm reception
-            if (user.equals(transactionOrder.getInterestedUser())) {
+            if (user.hasSameEmail(transactionOrder.getInterestedUser())) {
                 transactionOrder.setTransactionStatus(TransactionStatus.CLOSED);
                 transactionOrder.setTransactionStatus(transactionOrder.getTransactionStatus());
 
@@ -33,7 +33,7 @@ public class AwaitingReceptionStatusHandler extends TransactionStatusHandler {
 
         if (operation == OperationType.SELL) {
             // the dealer user is the one who has to confirm reception
-            if (user.equals(transactionOrder.getDealerUser())) {
+            if (user.hasSameEmail(transactionOrder.getDealerUser())) {
                 transactionOrder.setTransactionStatus(TransactionStatus.CLOSED);
                 transactionOrder.setTransactionStatus(transactionOrder.getTransactionStatus());
             } else {
@@ -43,12 +43,12 @@ public class AwaitingReceptionStatusHandler extends TransactionStatusHandler {
     }
 
     @Override
-    public void confirmReceptionFor(TransactionOrder transactionOrder, User confirmingUser) throws TransactionOrderException {
-        handleTransaction(transactionOrder, confirmingUser);
+    public void notifyReceptionFor(TransactionOrder transactionOrder, User userWhoNotifiesReception) throws TransactionOrderException {
+        handleTransaction(transactionOrder, userWhoNotifiesReception);
     }
 
     @Override
-    public void performTransferenceFor(TransactionOrder transactionOrder, User payingUser) throws TransactionOrderException {
+    public void notifyTransferenceFor(TransactionOrder transactionOrder, User userWhoNotifiesTransference) throws TransactionOrderException {
         throw new TransferAlreadyMadeException("The transfer has already been made");
     }
 

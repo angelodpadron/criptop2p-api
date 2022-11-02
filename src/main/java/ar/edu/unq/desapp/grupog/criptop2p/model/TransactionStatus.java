@@ -4,5 +4,6 @@ public enum TransactionStatus {
     AWAITING_TRANSFERENCE,
     AWAITING_RECEPTION,
     CANCELLED,
+    CANCELLED_BY_SYSTEM,
     CLOSED
 }

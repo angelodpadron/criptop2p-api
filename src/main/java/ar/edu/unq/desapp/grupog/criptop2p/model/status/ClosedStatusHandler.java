@@ -19,12 +19,12 @@ public class ClosedStatusHandler extends TransactionStatusHandler {
     }
 
     @Override
-    public void performTransferenceFor(TransactionOrder transactionOrder, User payingUser) throws TransactionOrderException {
+    public void notifyTransferenceFor(TransactionOrder transactionOrder, User userWhoNotifiesTransference) throws TransactionOrderException {
         throwClosedStatusException();
     }
 
     @Override
-    public void confirmReceptionFor(TransactionOrder transactionOrder, User confirmingUser) throws TransactionOrderException {
+    public void notifyReceptionFor(TransactionOrder transactionOrder, User userWhoNotifiesReception) throws TransactionOrderException {
         throwClosedStatusException();
     }
 

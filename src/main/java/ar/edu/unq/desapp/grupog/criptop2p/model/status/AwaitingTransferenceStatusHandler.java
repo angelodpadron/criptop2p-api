@@ -15,14 +15,14 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
         return status == TransactionStatus.AWAITING_TRANSFERENCE;
     }
 
-    public void handleTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
+    private void handleTransaction(TransactionOrder transactionOrder, User user) throws TransactionOrderException {
         checkIfUserCanOperateTransaction(transactionOrder, user);
 
         OperationType operation = transactionOrder.getMarketOrder().getOperation();
 
         if (operation == OperationType.PURCHASE) {
             // only the dealer user can perform the transference
-            if (user.equals(transactionOrder.getDealerUser())) {
+            if (user.hasSameEmail(transactionOrder.getDealerUser())) {
                 transactionOrder.setTransactionStatus(TransactionStatus.AWAITING_RECEPTION);
                 transactionOrder.setTransactionStatus(transactionOrder.getTransactionStatus());
             } else {
@@ -32,7 +32,7 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
 
         if (operation == OperationType.SELL) {
             // only the interested user can perform the transference
-            if (user.equals(transactionOrder.getInterestedUser())) {
+            if (user.hasSameEmail(transactionOrder.getInterestedUser())) {
                 transactionOrder.setTransactionStatus(TransactionStatus.AWAITING_RECEPTION);
                 transactionOrder.setTransactionStatus(transactionOrder.getTransactionStatus());
             } else {
@@ -42,12 +42,12 @@ public class AwaitingTransferenceStatusHandler extends TransactionStatusHandler 
     }
 
     @Override
-    public void performTransferenceFor(TransactionOrder transactionOrder, User payingUser) throws TransactionOrderException {
-        handleTransaction(transactionOrder, payingUser);
+    public void notifyTransferenceFor(TransactionOrder transactionOrder, User userWhoNotifiesTransference) throws TransactionOrderException {
+        handleTransaction(transactionOrder, userWhoNotifiesTransference);
     }
 
     @Override
-    public void confirmReceptionFor(TransactionOrder transactionOrder, User confirmingUser) throws TransactionOrderException {
+    public void notifyReceptionFor(TransactionOrder transactionOrder, User userWhoNotifiesReception) throws TransactionOrderException {
         throw new TransferIsPendingException("Reception cannot be confirmed without prior transference");
     }
 

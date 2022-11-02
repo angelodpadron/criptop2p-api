@@ -19,8 +19,8 @@ import java.time.temporal.ChronoUnit;
 public class TransactionOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @ManyToOne
+    private Long id;
+    @ManyToOne(cascade = CascadeType.ALL)
     private MarketOrder marketOrder;
     private LocalDateTime creationDate;
     @ManyToOne
@@ -30,18 +30,15 @@ public class TransactionOrder {
     @Enumerated(EnumType.STRING)
     private TransactionStatus transactionStatus = TransactionStatus.AWAITING_TRANSFERENCE;
 
-    public static TransactionOrder generateFor(MarketOrder marketOrder, User interestedUser) {
-        TransactionOrder transactionOrder = new TransactionOrder();
+    public TransactionOrder(MarketOrder marketOrder, User interestedUser) {
+        this.marketOrder = marketOrder;
+        this.interestedUser = interestedUser;
+        this.dealerUser = marketOrder.getCreator();
+        this.creationDate = LocalDateTime.now();
+    }
 
-        transactionOrder.setMarketOrder(marketOrder);
-        transactionOrder.setCreationDate(LocalDateTime.now());
-        transactionOrder.setDealerUser(marketOrder.getCreator());
-        transactionOrder.setInterestedUser(interestedUser);
-
-        interestedUser.addTransactionOrder(transactionOrder);
-        marketOrder.getCreator().addTransactionOrder(transactionOrder);
-
-        return transactionOrder;
+    public void cancelTransactionAsSystem() {
+        transactionStatus = TransactionStatus.CANCELLED_BY_SYSTEM;
     }
 
     public void cancelTransactionFor(User user) throws TransactionOrderException, TransactionStatusException {
@@ -52,16 +49,16 @@ public class TransactionOrder {
         marketOrder.setAvailable(true);
     }
 
-    public void performTransferenceAs(User payingUser) throws TransactionStatusException, TransactionOrderException {
+    public void notifyTransferenceAs(User payingUser) throws TransactionStatusException, TransactionOrderException {
         TransactionStatusHandler
                 .getTransactionStatusHandlerFor(transactionStatus)
-                .performTransferenceFor(this, payingUser);
+                .notifyTransferenceFor(this, payingUser);
     }
 
-    public void confirmReceptionAs(User confirmingUser) throws TransactionStatusException, TransactionOrderException {
+    public void notifyReceptionAs(User confirmingUser) throws TransactionStatusException, TransactionOrderException {
         TransactionStatusHandler
                 .getTransactionStatusHandlerFor(transactionStatus)
-                .confirmReceptionFor(this, confirmingUser);
+                .notifyReceptionFor(this, confirmingUser);
 
         if (transactionStatus == TransactionStatus.CLOSED) {
             addOperationAmountToUsers();
@@ -86,4 +83,5 @@ public class TransactionOrder {
         dealerUser.addPoints(pointsToBeAdded);
         interestedUser.addPoints(pointsToBeAdded);
     }
+
 }
