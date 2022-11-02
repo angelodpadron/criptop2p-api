@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/marketorder")
+@RequestMapping(path = "/api/marketorders")
 @RequiredArgsConstructor
 @Slf4j
 public class MarketOrderController {
@@ -30,6 +30,13 @@ public class MarketOrderController {
     @ResponseBody
     public ResponseEntity<List<MarketOrderResponseBody>> getMarketOrders() {
         return ResponseEntity.ok().body(marketOrderService.getMarketOrders());
+    }
+
+    @Operation(summary = "Get all market orders created by the user")
+    @GetMapping("/created")
+    @ResponseBody
+    public ResponseEntity<List<MarketOrderResponseBody>> getAllUserMarketOrders() {
+        return ResponseEntity.ok().body(marketOrderService.getUserMarketOrders());
     }
 
     @Operation(summary = "Create a market order")

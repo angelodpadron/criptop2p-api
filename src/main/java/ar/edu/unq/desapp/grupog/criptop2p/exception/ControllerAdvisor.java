@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
+import java.net.ConnectException;
 import java.util.List;
 import java.util.Map;
 
@@ -66,6 +67,13 @@ public class ControllerAdvisor {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(PriceExceedsOperationLimitException.class)
     public String handlePriceExceedsOperationLimitException(PriceExceedsOperationLimitException exception) {
+        return exception.getMessage();
+    }
+
+    // Telecentro moment
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler(ConnectException.class)
+    public String handleConnectionException(ConnectException exception) {
         return exception.getMessage();
     }
 

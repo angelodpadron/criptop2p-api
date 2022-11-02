@@ -3,17 +3,16 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
-import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.MarketOrderRepository;
+import ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers.marketOrderEntityToResponseBody;
 import static ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers.marketOrderRequestBodyToEntity;
 
 @Service
@@ -34,28 +33,21 @@ public class MarketOrderService {
 
     }
 
-    public MarketOrder getMarketOrder(Long marketOrderId) throws TransactionOrderException {
-        return marketOrderRepository.findById(marketOrderId).orElseThrow(() -> new TransactionOrderException("Market order not found"));
+    public MarketOrder getMarketOrder(Long marketOrderId) throws MarketOrderNotFoundException {
+        return marketOrderRepository.findById(marketOrderId).orElseThrow(() -> new MarketOrderNotFoundException("Market order not found"));
     }
 
     public List<MarketOrderResponseBody> getMarketOrders() {
         List<MarketOrder> marketOrders = marketOrderRepository.findAll();
-        List<MarketOrderResponseBody> marketOrderResponseBodies = new ArrayList<>();
-
-        marketOrders.forEach(marketOrder -> marketOrderResponseBodies.add(marketOrderEntityToResponseBody(marketOrder)));
-
-        return marketOrderResponseBodies;
+        return marketOrders.stream().map(Mappers::marketOrderEntityToResponseBody).toList();
 
     }
 
     public List<MarketOrderResponseBody> getUserMarketOrders() {
         User user = userService.getUserLoggedIn();
         List<MarketOrder> marketOrders = user.getMarketOrders();
-        List<MarketOrderResponseBody> marketOrderResponseBodies = new ArrayList<>();
 
-        marketOrders.forEach(marketOrder -> marketOrderResponseBodies.add(marketOrderEntityToResponseBody(marketOrder)));
-
-        return marketOrderResponseBodies;
+        return marketOrders.stream().map(Mappers::marketOrderEntityToResponseBody).toList();
     }
 
 }

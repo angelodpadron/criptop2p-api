@@ -15,7 +15,7 @@ public class ModelTestResources {
                 "Juan",
                 "Nieve",
                 "jnieve@norte.com",
-                "jnieve",
+                "Password@1",
                 "Norte 1",
                 "4608738591410700547451",
                 "45821674");
@@ -26,7 +26,7 @@ public class ModelTestResources {
                 "Rhaenyra",
                 "Targaryen",
                 "rtargaryen@gmail.com",
-                "rtargaryen",
+                "Password@1",
                 "Oeste 1",
                 "4608738591410700547451",
                 "45821674");

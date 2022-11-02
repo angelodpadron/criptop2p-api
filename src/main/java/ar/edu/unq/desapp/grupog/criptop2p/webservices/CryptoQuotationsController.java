@@ -24,7 +24,6 @@ public class CryptoQuotationsController {
     @Operation(summary = "Fetch quotations for all the available cryptos")
     @GetMapping
     public ResponseEntity<List<CryptoQuotation>> getAllQuotations() {
-        // user consulting: SecurityContextHolder.getContext().getAuthentication().getPrincipal()
         return ResponseEntity.ok().body(cryptoQuotationService.getAllQuotations());
     }
 
