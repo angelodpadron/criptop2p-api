@@ -38,8 +38,11 @@ public class TransactionOrderService {
         MarketOrder marketOrder = marketOrderService.getMarketOrder(marketOrderId);
         CryptoQuotation cryptoQuotation = cryptoQuotationService.getQuotation(marketOrder.getCryptocurrency());
 
-        TransactionOrder transactionOrder = marketOrder.generateTransactionFor(interestedUser, cryptoQuotation.getPriceInUSD());
-        transactionOrderRepository.save(transactionOrder);
+        TransactionOrder transactionOrder =
+                transactionOrderRepository.save(
+                        marketOrder
+                                .generateTransactionFor(interestedUser, cryptoQuotation.getPriceInUSD())
+                );
 
         return transactionOrderEntityToResponseBody(transactionOrder);
 

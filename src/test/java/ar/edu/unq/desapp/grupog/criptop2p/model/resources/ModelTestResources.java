@@ -64,6 +64,7 @@ public class ModelTestResources {
         }
     }
 
+
     public static TransactionOrder getSellingTransactionOrder1() {
         return new TransactionOrder(getSellingMarketOrder1(), getBasicUser2());
     }
@@ -72,4 +73,9 @@ public class ModelTestResources {
         return new TransactionOrder(getPurchaseMarketOrder1(), getBasicUser2());
     }
 
+    public static TransactionOrder getSellingTransactionOrderWithId(Long id) {
+        TransactionOrder transactionOrder = new TransactionOrder(getSellingMarketOrder1(), getBasicUser2());
+        transactionOrder.setId(id);
+        return transactionOrder;
+    }
 }
