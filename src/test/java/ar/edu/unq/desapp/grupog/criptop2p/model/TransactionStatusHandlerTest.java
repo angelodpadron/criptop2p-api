@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class TransactionStatusHandlerTest {
+class TransactionStatusHandlerTest {
     @DisplayName("The transaction status handler returns a specific handler according to a transaction status")
     @Test
     void transactionStatusHandlerReturnsAHandlerTest() throws TransactionStatusException {

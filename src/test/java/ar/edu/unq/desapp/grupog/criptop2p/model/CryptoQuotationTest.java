@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-public class CryptoQuotationTest {
+class CryptoQuotationTest {
 
     @DisplayName("Quotation data can be added to a crypto quotation")
     @Test

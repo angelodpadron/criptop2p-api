@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserIntegrationTest {
+class UserIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
@@ -28,7 +28,7 @@ public class UserIntegrationTest {
 
     @Test
     @DisplayName("A valid user registration requests returns a created status response")
-    public void aValidUserRegistrationRequestTest() throws Exception {
+    void aValidUserRegistrationRequestTest() throws Exception {
 
         UserRequestBody validUserCreationRequest = generateValidUserRequest();
 
@@ -41,7 +41,7 @@ public class UserIntegrationTest {
 
     @Test
     @DisplayName("An invalid user registration requests returns a bad request status response")
-    public void anInvalidUserRegistrationRequestTest() throws Exception {
+    void anInvalidUserRegistrationRequestTest() throws Exception {
 
         UserRequestBody invalidUserCreationRequest = generateInvalidUserRequest();
 

@@ -11,18 +11,18 @@ import static ar.edu.unq.desapp.grupog.criptop2p.model.TransactionStatus.*;
 import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getSellingTransactionOrder1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TransactionOrderTest {
+class TransactionOrderTest {
 
     @Test
     @DisplayName("A created transaction order has its status as \"AWAITING_TRANSFERENCE\"")
-    public void createdTransactionOrderStatusTest() {
+    void createdTransactionOrderStatusTest() {
         TransactionOrder transactionOrder = new TransactionOrder();
         assertEquals(AWAITING_TRANSFERENCE, transactionOrder.getTransactionStatus());
     }
 
     @Test
     @DisplayName("When a transaction order is cancelled as system, its status changes to \"CANCELLED_BY_SYSTEM\"")
-    public void cancellingATransactionOrderBySystemTest() {
+    void cancellingATransactionOrderBySystemTest() {
         TransactionOrder transactionOrder = new TransactionOrder();
         transactionOrder.cancelTransactionAsSystem();
         assertEquals(CANCELLED_BY_SYSTEM, transactionOrder.getTransactionStatus());
@@ -31,7 +31,7 @@ public class TransactionOrderTest {
 
     @Test
     @DisplayName("When a transaction order is cancelled by a user, its status changes to \"CANCELLED\"")
-    public void cancellingATransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
+    void cancellingATransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
         TransactionOrder transactionOrder = getSellingTransactionOrder1();
         transactionOrder.cancelTransactionFor(transactionOrder.getDealerUser());
         assertEquals(CANCELLED, transactionOrder.getTransactionStatus());
@@ -40,7 +40,7 @@ public class TransactionOrderTest {
 
     @Test
     @DisplayName("When a transference of a selling transaction order is notified by the interested user, its status changes to \"AWAITING_RECEPTION\"")
-    public void notifyingTransferenceOfATransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
+    void notifyingTransferenceOfATransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
         TransactionOrder transactionOrder = getSellingTransactionOrder1();
         transactionOrder.notifyTransferenceAs(transactionOrder.getInterestedUser());
         assertEquals(AWAITING_RECEPTION, transactionOrder.getTransactionStatus());
@@ -48,7 +48,7 @@ public class TransactionOrderTest {
 
     @Test
     @DisplayName("When the reception of a selling transaction order is notified by the dealer user, its status changes to \"CLOSED\"")
-    public void notifyingReceptionOfATransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
+    void notifyingReceptionOfATransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
         TransactionOrder transactionOrder = getSellingTransactionOrder1();
         transactionOrder.setTransactionStatus(AWAITING_RECEPTION);
 
@@ -59,7 +59,7 @@ public class TransactionOrderTest {
 
     @Test
     @DisplayName("When a transaction order is closed, the operation amount of the party users its increased by 1")
-    public void increasingOperationAmountToPartyOfTransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
+    void increasingOperationAmountToPartyOfTransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
         TransactionOrder transactionOrder = getSellingTransactionOrder1();
         transactionOrder.setTransactionStatus(AWAITING_RECEPTION);
 
@@ -72,7 +72,7 @@ public class TransactionOrderTest {
 
     @Test
     @DisplayName("When a transaction order is closed within the first 30 minutes of creation, 10 points are added to the party users")
-    public void addingTenPointsToPartyUsersAfterClosingTransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
+    void addingTenPointsToPartyUsersAfterClosingTransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
         TransactionOrder transactionOrder = getSellingTransactionOrder1();
         transactionOrder.setTransactionStatus(AWAITING_RECEPTION);
 
@@ -85,7 +85,7 @@ public class TransactionOrderTest {
 
     @Test
     @DisplayName("When a transaction order is closed after 30 minutes of creation, 5 points are added to the party users")
-    public void addingFivePointsToPartyUsersAfterClosingTransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
+    void addingFivePointsToPartyUsersAfterClosingTransactionOrderTest() throws TransactionOrderException, TransactionStatusException {
         TransactionOrder transactionOrder = getSellingTransactionOrder1();
         transactionOrder.setTransactionStatus(AWAITING_RECEPTION);
         transactionOrder.setCreationDate(LocalDateTime.now().minusMinutes(30));

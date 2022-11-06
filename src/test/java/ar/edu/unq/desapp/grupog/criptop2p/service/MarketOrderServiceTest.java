@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class MarketOrderServiceTest {
+class MarketOrderServiceTest {
 
     @Mock
     private MarketOrderRepository marketOrderRepository;

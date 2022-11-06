@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-public class QuotationDataTest {
+class QuotationDataTest {
 
     @DisplayName("When instantiating a quotation data class, a timestamp is created")
     @Test

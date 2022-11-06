@@ -34,7 +34,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class TransactionOrderServiceTest {
+class TransactionOrderServiceTest {
 
     @Mock
     private TransactionOrderRepository transactionOrderRepository;
