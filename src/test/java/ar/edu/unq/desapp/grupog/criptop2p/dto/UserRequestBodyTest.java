@@ -11,13 +11,13 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UserRequestBodyTest {
+class UserRequestBodyTest {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
     @DisplayName("The username can have three to thirty characters")
-    public void usernameLengthCanHaveThreeToThirtyCharactersTest() {
+    void usernameLengthCanHaveThreeToThirtyCharactersTest() {
         UserRequestBody user = generateUserRequestBodyWithFirstname("Joseph Joestar");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -26,7 +26,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("The username cannot cannot have less than three characters")
-    public void usernameCannotHaveLessThanThreeCharactersTest() {
+    void usernameCannotHaveLessThanThreeCharactersTest() {
         UserRequestBody user = generateUserRequestBodyWithFirstname("Ty");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -35,7 +35,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("The username cannot have more than thirty characters")
-    public void usernameCannotHaveMoreThanThirtyCharactersTest() {
+    void usernameCannotHaveMoreThanThirtyCharactersTest() {
         UserRequestBody user = generateUserRequestBodyWithFirstname("Wolfeschlegelsteinhausenbergerdorff");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -44,7 +44,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("A valid user email should not raise a validation error")
-    public void userEmailIsValidTest() {
+    void userEmailIsValidTest() {
         UserRequestBody user = generateUserRequestBodyWithEmail("jdoe@gmail.com");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -53,7 +53,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("An invalid user email should raise a validation error")
-    public void userEmailIsInvalidTest() {
+    void userEmailIsInvalidTest() {
         UserRequestBody user = generateUserRequestBodyWithEmail("Obviously not an email");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -62,7 +62,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("A user password should contain an uppercase, a lowercase, a number and a special character")
-    public void userPasswordIsValidPasswordTest() {
+    void userPasswordIsValidPasswordTest() {
         UserRequestBody user = generateUserRequestBodyWithPassword("passworD@1");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -71,7 +71,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("A user password without an uppercase, a lowercase, a number and a special character should raise a validation error")
-    public void userPasswordIsInvalidTest() {
+    void userPasswordIsInvalidTest() {
         UserRequestBody user = generateUserRequestBodyWithEmail("123");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -80,7 +80,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("A user address can have three to thirty characters")
-    public void userAddressIsValidTest() {
+    void userAddressIsValidTest() {
         UserRequestBody user = generateUserRequestBodyWhitAddress("Florida Avenue");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -89,7 +89,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("A user address cannot have less than three characters")
-    public void userAddressCannotHaveLessThanThreeCharactersTest() {
+    void userAddressCannotHaveLessThanThreeCharactersTest() {
         UserRequestBody user = generateUserRequestBodyWhitAddress("St");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -98,7 +98,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("A user address cannot have more than thirty characters")
-    public void userAddressCannotHaveMoreThanThirtyCharactersTest() {
+    void userAddressCannotHaveMoreThanThirtyCharactersTest() {
         UserRequestBody user = generateUserRequestBodyWhitAddress("Wolfeschlegelsteinhausenbergerdorff Street");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -107,7 +107,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("A user cvu should consist of 22 digits")
-    public void userCVUIsValidTest() {
+    void userCVUIsValidTest() {
         UserRequestBody user = generateUserRequestBodyWhitCVU("4608738591410700747451");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -116,7 +116,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("A user CVU of size other than 22 should raise an error.")
-    public void userCVUIsInvalidTest() {
+    void userCVUIsInvalidTest() {
         UserRequestBody user = generateUserRequestBodyWhitCVU("123");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -125,7 +125,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("A user wallet address should consist of 8 digits")
-    public void userWalletAddressIsValidTest() {
+    void userWalletAddressIsValidTest() {
         UserRequestBody user = generateUserRequestBodyWithWalletAddress("12345678");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 
@@ -134,7 +134,7 @@ public class UserRequestBodyTest {
 
     @Test
     @DisplayName("A user wallet address of size other than 8 should raise an error.")
-    public void userWalletAddressIsInvalidTest() {
+    void userWalletAddressIsInvalidTest() {
         UserRequestBody user = generateUserRequestBodyWithWalletAddress("123");
         Set<ConstraintViolation<UserRequestBody>> violations = validator.validate(user);
 

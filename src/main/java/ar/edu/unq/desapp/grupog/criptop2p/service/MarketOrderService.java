@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.cryptoquotation.SymbolNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
@@ -23,9 +24,9 @@ public class MarketOrderService {
     private final UserService userService;
     private final CryptoQuotationService cryptoQuotationService;
 
-    public void addMarketOrderToUser(MarketOrderRequestBody marketOrderRequestBody) throws MarketOrderException {
+    public void addMarketOrderToUser(MarketOrderRequestBody marketOrderRequestBody) throws MarketOrderException, SymbolNotFoundException {
         User user = userService.getUserLoggedIn();
-        Double marketPrice = cryptoQuotationService.getQuotation(marketOrderRequestBody.getCryptocurrency()).getPriceInUSD();
+        Double marketPrice = cryptoQuotationService.getCurrentUsdPriceFor(marketOrderRequestBody.getCryptocurrency());
         MarketOrder marketOrder = marketOrderRequestBodyToEntity(marketOrderRequestBody, user, marketPrice);
 
         marketOrderRepository.save(marketOrder);

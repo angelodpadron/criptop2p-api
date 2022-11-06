@@ -10,7 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class UserTest {
+class UserTest {
 
     @Test
     @DisplayName("A user initially has zero operations")

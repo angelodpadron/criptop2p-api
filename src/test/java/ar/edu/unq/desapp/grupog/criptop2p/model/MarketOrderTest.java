@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MarketOrderTest {
+class MarketOrderTest {
 
     @Test
     @DisplayName("A target price can vary five percent the market price")
-    public void aMarketOrderWithATargetPriceOfFivePercentLimitTest() throws MarketOrderException {
+    void aMarketOrderWithATargetPriceOfFivePercentLimitTest() throws MarketOrderException {
         Double marketPrice = 100.0;
         Double targetPrice = marketPrice + marketPrice * 0.5;
 
@@ -31,7 +31,7 @@ public class MarketOrderTest {
 
     @Test
     @DisplayName("A target price cannot be greater than five percent the market price")
-    public void aMarketOrderWithATargetPriceGreaterThanFivePercentLimitTest() {
+    void aMarketOrderWithATargetPriceGreaterThanFivePercentLimitTest() {
         Double marketPrice = 100.0;
         Double marketPricePlusFivePercent = marketPrice + marketPrice * 0.5;
         Double targetPrice = marketPricePlusFivePercent + 1;
@@ -43,7 +43,7 @@ public class MarketOrderTest {
 
     @Test
     @DisplayName("A target price cannot be lesser than five percent the market price")
-    public void aMarketOrderWithATargetPriceLesserThanFivePercentLimitTest() {
+    void aMarketOrderWithATargetPriceLesserThanFivePercentLimitTest() {
         Double marketPrice = 100.0;
         Double marketPriceLessFivePercent = marketPrice - marketPrice * 0.5;
         Double targetPrice = marketPriceLessFivePercent - 1;
@@ -56,14 +56,14 @@ public class MarketOrderTest {
 
     @Test
     @DisplayName("A market order is initially available")
-    public void aMarketOrderAnAvailableStatusTest() {
+    void aMarketOrderAnAvailableStatusTest() {
         MarketOrder marketOrder = new MarketOrder();
         assertTrue(marketOrder.getAvailable());
     }
 
     @Test
     @DisplayName("A sell market order generates a transaction order when the assert quotation is lower or equal than the target price")
-    public void aSellMarketOrderWithACorrectTargetPriceTest() throws TransactionOrderException {
+    void aSellMarketOrderWithACorrectTargetPriceTest() throws TransactionOrderException {
         MarketOrder sellingMarketOrder = getSellingMarketOrder1();
         Double correctAssetQuote = sellingMarketOrder.getTargetPrice();
 
@@ -79,7 +79,7 @@ public class MarketOrderTest {
 
     @Test
     @DisplayName("A sell market order cannot generate a transaction order when the asset quotation is higher than the target price")
-    public void aSellMarketOrderWithATargetPriceHigherThanAssertQuotationExceptionTest() {
+    void aSellMarketOrderWithATargetPriceHigherThanAssertQuotationExceptionTest() {
         MarketOrder sellingMarketOrder = getSellingMarketOrder1();
         Double higherQuotation = sellingMarketOrder.getMarketPrice() + 1;
 
@@ -92,7 +92,7 @@ public class MarketOrderTest {
 
     @Test
     @DisplayName("A purchase market order generates a transaction order when the assert quotation is higher or equal than the target price")
-    public void aPurchaseMarketOrderWithACorrectTargetPriceTest() throws TransactionOrderException {
+    void aPurchaseMarketOrderWithACorrectTargetPriceTest() throws TransactionOrderException {
         MarketOrder purchaseMarketOrder = getPurchaseMarketOrder1();
         Double correctAssetQuote = purchaseMarketOrder.getTargetPrice();
 
@@ -108,7 +108,7 @@ public class MarketOrderTest {
 
     @Test
     @DisplayName("A purchase market order cannot generate a transaction order when the asset quotation is lower than the target price")
-    public void aPurchaseMarketOrderWithATargetPriceLowerThanAssertQuotationExceptionTest() {
+    void aPurchaseMarketOrderWithATargetPriceLowerThanAssertQuotationExceptionTest() {
         MarketOrder purchaseMarketOrder = getPurchaseMarketOrder1();
         Double lowerQuotation = purchaseMarketOrder.getTargetPrice() - 1;
 
@@ -120,7 +120,7 @@ public class MarketOrderTest {
 
     @Test
     @DisplayName("A market order is unavailable when a user applies to it")
-    public void aMarketOrderGetsUnavailableTest() throws TransactionOrderException, PriceExceedsOperationLimitException {
+    void aMarketOrderGetsUnavailableTest() throws TransactionOrderException, PriceExceedsOperationLimitException {
         MarketOrder sellingMarketOrder = getSellingMarketOrder1();
         User interestedUser = mock(User.class);
         when(interestedUser.getEmail()).thenReturn("interested@email.com");
@@ -132,7 +132,7 @@ public class MarketOrderTest {
 
     @Test
     @DisplayName("A market order cannot generate a transaction for the user who created it")
-    public void aMarketOrderCannotGenerateATransactionForTheSameUserTest() {
+    void aMarketOrderCannotGenerateATransactionForTheSameUserTest() {
         MarketOrder sellingMarketOrder = getSellingMarketOrder1();
         User dealerUser = sellingMarketOrder.getCreator();
         Double validQuotation = sellingMarketOrder.getTargetPrice();
@@ -143,7 +143,7 @@ public class MarketOrderTest {
 
     @Test
     @DisplayName("A market order cannot generate a transaction when it is not available ")
-    public void anUnavailableMarketOrderGeneratesATransactionExceptionTest() throws TransactionOrderException, PriceExceedsOperationLimitException {
+    void anUnavailableMarketOrderGeneratesATransactionExceptionTest() throws TransactionOrderException, PriceExceedsOperationLimitException {
         MarketOrder sellingMarketOrder = getSellingMarketOrder1();
         User interestedUser = mock(User.class);
         when(interestedUser.getEmail()).thenReturn("first@test.com");

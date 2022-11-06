@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupog.criptop2p.exception;
 
+import ar.edu.unq.desapp.grupog.criptop2p.exception.cryptoquotation.SymbolNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.PriceExceedsOperationLimitException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
@@ -67,6 +68,12 @@ public class ControllerAdvisor {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(PriceExceedsOperationLimitException.class)
     public String handlePriceExceedsOperationLimitException(PriceExceedsOperationLimitException exception) {
+        return exception.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(SymbolNotFoundException.class)
+    public String handleSymbolNotFoundException(SymbolNotFoundException exception) {
         return exception.getMessage();
     }
 
