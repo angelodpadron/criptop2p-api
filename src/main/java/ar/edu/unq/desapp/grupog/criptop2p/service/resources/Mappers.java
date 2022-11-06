@@ -1,13 +1,8 @@
 package ar.edu.unq.desapp.grupog.criptop2p.service.resources;
 
-import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
-import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
-import ar.edu.unq.desapp.grupog.criptop2p.dto.OperationAmountResponseBody;
-import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.*;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
-import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
-import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
-import ar.edu.unq.desapp.grupog.criptop2p.model.User;
+import ar.edu.unq.desapp.grupog.criptop2p.model.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +11,26 @@ public final class Mappers {
 
     private Mappers() {
     }
+
+    // Crypto quotation mappings
+
+    public static CryptoQuotationResponseBody cryptoQuotationEntityTo24HoursResponseBody(CryptoQuotation cryptoQuotation) {
+        List<QuotationDataResponseBody> quotationDataResponseBodies =
+                cryptoQuotation
+                        .getQuotationData()
+                        .stream()
+                        .map(quotationData ->
+                                new QuotationDataResponseBody(quotationData.getPriceInUSD(), quotationData.getPriceInARS(), quotationData.getLastUpdate()))
+                        .toList();
+
+        return new CryptoQuotationResponseBody(cryptoQuotation.getSymbol(), quotationDataResponseBodies);
+    }
+
+    public static CurrentCryptoQuotationResponseBody cryptoQuotationEntityToResponseBody(CryptoQuotation cryptoQuotation) {
+        QuotationData quotationData = cryptoQuotation.getLastQuotation();
+        return new CurrentCryptoQuotationResponseBody(cryptoQuotation.getSymbol(), quotationData.getPriceInUSD(), quotationData.getPriceInARS(), quotationData.getLastUpdate());
+    }
+
 
     // Transaction order mappings
 

@@ -2,11 +2,11 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.OperationAmountResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.cryptoquotation.SymbolNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionStatusException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.user.InvalidConsultationDatesException;
-import ar.edu.unq.desapp.grupog.criptop2p.model.CryptoQuotation;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
@@ -67,17 +67,16 @@ public class TransactionOrderServiceTest {
 
     @DisplayName("The service generates a transaction order and return a transaction response body")
     @Test
-    void generateATransactionOrderAndReturnResponseBodyTest() throws MarketOrderNotFoundException, TransactionOrderException {
+    void generateATransactionOrderAndReturnResponseBodyTest() throws MarketOrderNotFoundException, TransactionOrderException, SymbolNotFoundException {
         TransactionOrder sellingTransactionOrder = getSellingTransactionOrderWithId(1L);
 
         User dealerUser = sellingTransactionOrder.getDealerUser();
         User interestedUser = sellingTransactionOrder.getInterestedUser();
         MarketOrder marketOrder = sellingTransactionOrder.getMarketOrder();
-        CryptoQuotation cryptoQuotation = new CryptoQuotation(marketOrder.getCryptocurrency(), marketOrder.getMarketPrice(), marketOrder.getMarketPrice());
 
         when(userService.getUserLoggedIn()).thenReturn(interestedUser);
         when(marketOrderService.getMarketOrder(any())).thenReturn(marketOrder);
-        when(cryptoQuotationService.getQuotation(any())).thenReturn(cryptoQuotation);
+        when(cryptoQuotationService.getCurrentUsdPriceFor(any())).thenReturn(marketOrder.getTargetPrice());
         when(transactionOrderRepository.save(any())).thenReturn(sellingTransactionOrder);
 
         TransactionOrderResponseBody responseBody = transactionOrderService.addTransactionOrderToUser(marketOrder.getId());

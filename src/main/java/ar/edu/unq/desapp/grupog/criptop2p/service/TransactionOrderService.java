@@ -2,12 +2,12 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.OperationAmountResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.cryptoquotation.SymbolNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.PriceExceedsOperationLimitException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionStatusException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.user.InvalidConsultationDatesException;
-import ar.edu.unq.desapp.grupog.criptop2p.model.CryptoQuotation;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
@@ -33,15 +33,15 @@ public class TransactionOrderService {
     private final CryptoQuotationService cryptoQuotationService;
     private final BCRAClient bcraClient;
 
-    public TransactionOrderResponseBody addTransactionOrderToUser(Long marketOrderId) throws TransactionOrderException, PriceExceedsOperationLimitException, MarketOrderNotFoundException {
+    public TransactionOrderResponseBody addTransactionOrderToUser(Long marketOrderId) throws TransactionOrderException, PriceExceedsOperationLimitException, MarketOrderNotFoundException, SymbolNotFoundException {
         User interestedUser = userService.getUserLoggedIn();
         MarketOrder marketOrder = marketOrderService.getMarketOrder(marketOrderId);
-        CryptoQuotation cryptoQuotation = cryptoQuotationService.getQuotation(marketOrder.getCryptocurrency());
+        Double marketPrice = cryptoQuotationService.getCurrentUsdPriceFor(marketOrder.getCryptocurrency());
 
         TransactionOrder transactionOrder =
                 transactionOrderRepository.save(
                         marketOrder
-                                .generateTransactionFor(interestedUser, cryptoQuotation.getPriceInUSD())
+                                .generateTransactionFor(interestedUser, marketPrice)
                 );
 
         return transactionOrderEntityToResponseBody(transactionOrder);

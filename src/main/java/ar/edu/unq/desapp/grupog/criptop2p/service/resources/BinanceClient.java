@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupog.criptop2p.service.resources;
 
-import ar.edu.unq.desapp.grupog.criptop2p.dto.CryptoQuotationResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.RawCryptoQuotationResponseBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -20,13 +20,13 @@ public class BinanceClient {
 
     private final RestTemplate restTemplate;
 
-    public List<CryptoQuotationResponseBody> getAllQuotations() {
-        Optional<List<CryptoQuotationResponseBody>> quotations = Optional.ofNullable(
+    public List<RawCryptoQuotationResponseBody> getAllQuotations() {
+        Optional<List<RawCryptoQuotationResponseBody>> quotations = Optional.ofNullable(
                 restTemplate.exchange(
                         getAllQuotationsUrl(),
                         HttpMethod.GET,
                         null,
-                        new ParameterizedTypeReference<List<CryptoQuotationResponseBody>>() {
+                        new ParameterizedTypeReference<List<RawCryptoQuotationResponseBody>>() {
                         }
                 ).getBody()
         );
@@ -35,28 +35,10 @@ public class BinanceClient {
 
     }
 
-    public CryptoQuotationResponseBody getQuotation(String symbol) {
-
-        return restTemplate.exchange(
-                getQuotationUrl(symbol),
-                HttpMethod.GET,
-                null,
-                CryptoQuotationResponseBody.class
-        ).getBody();
-    }
-
     private URI getAllQuotationsUrl() {
         return UriComponentsBuilder
                 .fromHttpUrl(Resources.BINANCE_ALL_QUOTATIONS_URL)
                 .replaceQueryParam("symbols", getFormattedSymbols())
-                .build()
-                .toUri();
-    }
-
-    private URI getQuotationUrl(String symbol) {
-        return UriComponentsBuilder
-                .fromHttpUrl(Resources.BINANCE_QUOTATION_URL)
-                .replaceQueryParam("symbol", symbol)
                 .build()
                 .toUri();
     }

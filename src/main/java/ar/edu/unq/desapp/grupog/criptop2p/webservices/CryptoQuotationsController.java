@@ -1,6 +1,8 @@
 package ar.edu.unq.desapp.grupog.criptop2p.webservices;
 
-import ar.edu.unq.desapp.grupog.criptop2p.model.CryptoQuotation;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.CryptoQuotationResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.CurrentCryptoQuotationResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.cryptoquotation.SymbolNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.service.CryptoQuotationService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +25,13 @@ public class CryptoQuotationsController {
 
     @Operation(summary = "Fetch quotations for all the available cryptos")
     @GetMapping
-    public ResponseEntity<List<CryptoQuotation>> getAllQuotations() {
-        return ResponseEntity.ok().body(cryptoQuotationService.getAllQuotations());
+    public ResponseEntity<List<CurrentCryptoQuotationResponseBody>> getAllQuotations() {
+        return ResponseEntity.ok().body(cryptoQuotationService.getAllCurrentQuotations());
     }
 
-    @Operation(summary = "Fetch quotation for a given cryptocurrency")
+    @Operation(summary = "Fetch last 24 hours quotations for a given crypto symbol")
     @GetMapping("{symbol}")
-    public ResponseEntity<CryptoQuotation> getQuotation(@PathVariable String symbol) {
-        return ResponseEntity.ok().body(cryptoQuotationService.getQuotation(symbol));
+    public ResponseEntity<CryptoQuotationResponseBody> getQuotation(@PathVariable String symbol) throws SymbolNotFoundException {
+        return ResponseEntity.ok().body(cryptoQuotationService.getLast24HoursQuotationFor(symbol));
     }
 }

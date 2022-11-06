@@ -2,9 +2,9 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.cryptoquotation.SymbolNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderNotFoundException;
-import ar.edu.unq.desapp.grupog.criptop2p.model.CryptoQuotation;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.MarketOrderRepository;
@@ -26,7 +26,8 @@ import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResour
 import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ServiceTestResources.getMarketOrderRequestBodyFromEntity;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -55,11 +56,9 @@ public class MarketOrderServiceTest {
 
     @DisplayName("A market order can be assigned to a user")
     @Test
-    void assigningMarketOrderToAUserTest() throws MarketOrderException {
-        CryptoQuotation quotation = mock(CryptoQuotation.class);
-        when(quotation.getPriceInUSD()).thenReturn(sellingMarketOrder1.getTargetPrice());
+    void assigningMarketOrderToAUserTest() throws MarketOrderException, SymbolNotFoundException {
         when(userService.getUserLoggedIn()).thenReturn(user1);
-        when(cryptoQuotationService.getQuotation(any())).thenReturn(quotation);
+        when(cryptoQuotationService.getCurrentUsdPriceFor(any())).thenReturn(sellingMarketOrder1.getTargetPrice());
 
         marketOrderService.addMarketOrderToUser(sellingMarketOrderRequestBody1);
 
