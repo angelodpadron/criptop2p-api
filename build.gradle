@@ -40,6 +40,13 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+def exclusions = [
+		"**/config/*",
+		"**/exception/*",
+		"**/dto/*",
+		"**/resources/*"
+]
+
 test {
 	finalizedBy jacocoTestReport
 }
@@ -52,12 +59,7 @@ jacocoTestReport {
 	}
 	afterEvaluate {
 		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: [
-			        "**/config/*",
-					"**/exception/*",
-					"**/dto/*",
-					"**/resources/*"
-			])
+			fileTree(dir: it, exclude: exclusions)
 		}))
 	}
 }
