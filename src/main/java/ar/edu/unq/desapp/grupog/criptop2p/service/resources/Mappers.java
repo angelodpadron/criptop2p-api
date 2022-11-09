@@ -81,4 +81,7 @@ public final class Mappers {
     }
 
 
+    public static UserSummaryResponseBody userEntityToSummaryResponseBody(User user) {
+        return new UserSummaryResponseBody(user.getFirstname(), user.getLastname(), user.getOperations(), user.getReputation());
+    }
 }

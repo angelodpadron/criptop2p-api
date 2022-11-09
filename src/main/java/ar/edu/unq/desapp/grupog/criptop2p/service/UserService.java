@@ -1,11 +1,13 @@
 package ar.edu.unq.desapp.grupog.criptop2p.service;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.UserSummaryResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.user.EmailAlreadyTakenException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.Role;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.RoleRepository;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.UserRepository;
+import ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional
@@ -60,6 +63,11 @@ public class UserService implements UserDetailsService {
 
     }
 
+    public List<UserSummaryResponseBody> getSummaryOfAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(Mappers::userEntityToSummaryResponseBody).toList();
+    }
+
     private User userRequestBodyToEntityMapper(UserRequestBody requestBody) {
         return modelMapper.map(requestBody, User.class);
     }
@@ -69,6 +77,7 @@ public class UserService implements UserDetailsService {
             throw new EmailAlreadyTakenException("There is an account with that email address:" + email);
         }
     }
+
     private boolean emailAlreadyTaken(String email) {
         return userRepository.findByEmail(email) != null;
     }

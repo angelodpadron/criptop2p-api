@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.service;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.UserSummaryResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.user.EmailAlreadyTakenException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.Role;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.List;
 
 import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getBasicUser1;
 import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ServiceTestResources.getUserRequestBodyFromEntity;
@@ -68,6 +71,25 @@ class UserServiceTest {
         when(userRepository.findByEmail(any())).thenReturn(user1);
 
         assertThrows(EmailAlreadyTakenException.class, () -> userService.saveUser(userRequestBody1));
+    }
+
+    @DisplayName("A summary of all the registered users can be generated")
+    @Test
+    void getUsersSummaryTest() {
+        User user1 = mock(User.class);
+        User user2 = mock(User.class);
+
+        when(user1.getFirstname()).thenReturn("John");
+        when(user2.getFirstname()).thenReturn("Maria");
+        when(userRepository.findAll()).thenReturn(List.of(user1, user2));
+
+        List<UserSummaryResponseBody> responseBodies = userService.getSummaryOfAllUsers();
+
+        assertFalse(responseBodies.isEmpty());
+        assertEquals(user1.getFirstname(), responseBodies.get(0).getFirstName());
+        assertEquals(user2.getFirstname(), responseBodies.get(1).getFirstName());
+
+
     }
 
     @DisplayName("[SPRING SECURITY] A saved user can be retrieved by email address")
