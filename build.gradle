@@ -40,10 +40,10 @@ tasks.named('test') {
 test.finalizedBy jacocoTestReport
 
 def exclusions = [
-		"**/config/*",
-		"**/exception/*",
-		"**/dto/*",
-		"**/utils/*"
+		"**/config/**",
+		"**/exception/**",
+		"**/dto/**",
+		"**/utils/**"
 ]
 
 jacocoTestReport {
@@ -64,7 +64,7 @@ sonarqube {
 		property "sonar.projectKey", "angelodpadron_criptop2p-api"
 		property "sonar.organization", "angelodpadron"
 		property "sonar.host.url", "https://sonarcloud.io"
-		property "sonar.coverage.exclusions", exclusions
+		property "sonar.exclusions", "**/config/**,**/exception/**,**/dto/**,**/utils/**"
 	}
 }
 
