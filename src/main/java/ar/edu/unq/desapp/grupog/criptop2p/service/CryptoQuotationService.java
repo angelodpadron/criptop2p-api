@@ -8,9 +8,9 @@ import ar.edu.unq.desapp.grupog.criptop2p.model.CryptoQuotation;
 import ar.edu.unq.desapp.grupog.criptop2p.model.QuotationData;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.CryptoQuotationRepository;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.QuotationDataRepository;
-import ar.edu.unq.desapp.grupog.criptop2p.service.resources.BCRAClient;
-import ar.edu.unq.desapp.grupog.criptop2p.service.resources.BinanceClient;
-import ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.BCRAClient;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.BinanceClient;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.Mappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

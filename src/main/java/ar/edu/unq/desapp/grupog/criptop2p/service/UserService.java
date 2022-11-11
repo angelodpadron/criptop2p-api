@@ -7,7 +7,7 @@ import ar.edu.unq.desapp.grupog.criptop2p.model.Role;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.RoleRepository;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.UserRepository;
-import ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.Mappers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

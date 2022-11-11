@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupog.criptop2p.dto.CryptoQuotationResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.CurrentCryptoQuotationResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.cryptoquotation.SymbolNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.service.CryptoQuotationService;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.aspects.LogExecutionTime;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequestMapping("api/quotations")
 @RequiredArgsConstructor
 @Slf4j
+@LogExecutionTime
 public class CryptoQuotationsController {
 
     private final CryptoQuotationService cryptoQuotationService;

@@ -7,7 +7,6 @@ plugins {
 	id "jacoco"
 }
 
-
 group = 'ar.edu.unq.desapp.grupog'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
@@ -15,7 +14,6 @@ sourceCompatibility = '17'
 repositories {
 	mavenCentral()
 }
-
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -35,21 +33,18 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
-
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+test.finalizedBy jacocoTestReport
 
 def exclusions = [
 		"**/config/*",
 		"**/exception/*",
 		"**/dto/*",
-		"**/resources/*"
+		"**/utils/*"
 ]
-
-test {
-	finalizedBy jacocoTestReport
-}
 
 jacocoTestReport {
 	dependsOn test
@@ -69,6 +64,7 @@ sonarqube {
 		property "sonar.projectKey", "angelodpadron_criptop2p-api"
 		property "sonar.organization", "angelodpadron"
 		property "sonar.host.url", "https://sonarcloud.io"
+		property "sonar.exclusions", exclusions
 	}
 }
 

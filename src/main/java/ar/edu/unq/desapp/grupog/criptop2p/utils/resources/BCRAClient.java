@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupog.criptop2p.service.resources;
+package ar.edu.unq.desapp.grupog.criptop2p.utils.resources;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.USDQuotationResponseBody;
 import lombok.RequiredArgsConstructor;

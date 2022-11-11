@@ -11,7 +11,7 @@ import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.TransactionOrderRepository;
-import ar.edu.unq.desapp.grupog.criptop2p.service.resources.BCRAClient;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.BCRAClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

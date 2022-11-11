@@ -8,6 +8,7 @@ import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderExcep
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.service.MarketOrderService;
 import ar.edu.unq.desapp.grupog.criptop2p.service.TransactionOrderService;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.aspects.LogExecutionTime;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequestMapping(path = "/api/marketorders")
 @RequiredArgsConstructor
 @Slf4j
+@LogExecutionTime
 public class MarketOrderController {
 
     private final MarketOrderService marketOrderService;

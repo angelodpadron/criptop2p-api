@@ -6,6 +6,7 @@ import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.Transaction
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionStatusException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.user.InvalidConsultationDatesException;
 import ar.edu.unq.desapp.grupog.criptop2p.service.TransactionOrderService;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.aspects.LogExecutionTime;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/transactions")
 @RequiredArgsConstructor
+@LogExecutionTime
 public class TransactionOrderController {
 
     private final TransactionOrderService transactionOrderService;
