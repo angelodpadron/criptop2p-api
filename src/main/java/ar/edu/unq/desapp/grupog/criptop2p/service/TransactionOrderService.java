@@ -12,8 +12,8 @@ import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.TransactionOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.TransactionOrderRepository;
-import ar.edu.unq.desapp.grupog.criptop2p.service.resources.BCRAClient;
-import ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.BCRAClient;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.Mappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers.transactionOrderEntityToResponseBody;
+import static ar.edu.unq.desapp.grupog.criptop2p.utils.resources.Mappers.transactionOrderEntityToResponseBody;
 
 @Service
 @RequiredArgsConstructor

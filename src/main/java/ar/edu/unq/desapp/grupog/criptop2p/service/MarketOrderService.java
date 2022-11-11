@@ -8,13 +8,13 @@ import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderNotFo
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.MarketOrderRepository;
-import ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.Mappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static ar.edu.unq.desapp.grupog.criptop2p.service.resources.Mappers.marketOrderRequestBodyToEntity;
+import static ar.edu.unq.desapp.grupog.criptop2p.utils.resources.Mappers.marketOrderRequestBodyToEntity;
 
 @Service
 @RequiredArgsConstructor
