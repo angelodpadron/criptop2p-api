@@ -64,7 +64,7 @@ sonarqube {
 		property "sonar.projectKey", "angelodpadron_criptop2p-api"
 		property "sonar.organization", "angelodpadron"
 		property "sonar.host.url", "https://sonarcloud.io"
-		property "sonar.exclusions", exclusions
+		property "sonar.coverage.exclusions", exclusions
 	}
 }
 
