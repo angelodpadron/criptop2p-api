@@ -3,13 +3,13 @@ ENTREGA 2 TAG 2.2
 ---------------------------------------------------------------------
 NEW FEATURES
 
-* Added endpoint to obtain a list of all platform users
+* Added endpoint to obtain a list of all platform users.
 * Added annotation to log execution details of either a specific method or all methods of a class.
 
 OTHERS
-* Updated SonarQube exclusions config
+
+* Updated SonarQube exclusions config.
 
 NOTES
 
-* Testings for the transaction order and crypto quotation services are still pending.
 * More integration tests are still pending.
