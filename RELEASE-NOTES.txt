@@ -1,17 +1,15 @@
 ---------------------------------------------------------------------
-ENTREGA 2 TAG 2.1
+ENTREGA 2 TAG 2.2
 ---------------------------------------------------------------------
 NEW FEATURES
 
-* Now a transaction order may be cancelled by the system depending on the variation between the target price and the
-current asset quotation.
-* Better organization of the endpoints.
+* Added endpoint to obtain a list of all platform users
+* Added annotation to log execution details of either a specific method or all methods of a class.
 
 OTHERS
-* Updated GitHub Actions configurations for continuous integration.
+* Updated SonarQube exclusions config
 
 NOTES
 
 * Testings for the transaction order and crypto quotation services are still pending.
 * More integration tests are still pending.
-* Because of that above, the coverage is still below 80%, something sonarcloud doesn't like very much.
