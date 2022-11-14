@@ -12,6 +12,7 @@ on:
     branches:
       - master
       - dev
+      - refactors
   pull_request:
     branches: [ "master" ]
 
