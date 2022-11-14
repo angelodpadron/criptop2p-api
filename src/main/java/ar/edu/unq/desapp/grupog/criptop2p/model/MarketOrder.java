@@ -49,16 +49,12 @@ public class MarketOrder {
         this.marketPrice = marketPrice;
         this.creator = creator;
         this.operation = operation;
-
-        if (targetPriceInRange(marketPrice, targetPrice)) {
-            this.targetPrice = targetPrice;
-        } else {
-            throw new InvalidMarketPriceException("Target price exceeds allowable variation");
-        }
+        this.targetPrice = validTargetPrice(marketPrice, targetPrice);
     }
 
     public TransactionOrder generateTransactionFor(User interestedUser, Double currentQuotation) throws TransactionOrderException, PriceExceedsOperationLimitException {
         checkIfUserCanApply(interestedUser);
+        available = false;
 
         TransactionOrder transactionOrder = new TransactionOrder(this, interestedUser);
         creator.addTransactionOrder(transactionOrder);
@@ -66,7 +62,6 @@ public class MarketOrder {
 
         checkIfTargetPriceIsValidForOperation(currentQuotation, transactionOrder);
 
-        available = false;
 
         return transactionOrder;
     }
@@ -83,7 +78,8 @@ public class MarketOrder {
     private void checkIfTargetPriceIsValidForOperation(Double currentQuotation, TransactionOrder transactionOrder) throws PriceExceedsOperationLimitException {
         if (!operation.priceIsValid(currentQuotation, targetPrice)) {
             transactionOrder.cancelTransactionAsSystem();
-            throw new PriceExceedsOperationLimitException("The market order price exceeds the limit for the type of operation");
+            available = true;
+//            throw new PriceExceedsOperationLimitException("The market order price exceeds the limit for the type of operation");
         }
     }
 
@@ -92,5 +88,15 @@ public class MarketOrder {
         Double minAllowedPrice = marketPrice - marketPrice * priceMarginAllowed;
         return targetPrice >= minAllowedPrice && targetPrice <= maxAllowedPrice;
     }
+
+    private Double validTargetPrice(Double marketPrice, Double targetPrice) throws InvalidMarketPriceException {
+        if (targetPriceInRange(marketPrice, targetPrice)) {
+            return targetPrice;
+        }
+
+        throw new InvalidMarketPriceException("Target price exceeds allowable variation");
+
+    }
+
 
 }

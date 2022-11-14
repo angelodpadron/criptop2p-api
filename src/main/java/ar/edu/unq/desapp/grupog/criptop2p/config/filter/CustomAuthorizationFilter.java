@@ -1,6 +1,11 @@
 package ar.edu.unq.desapp.grupog.criptop2p.config.filter;
 
 import ar.edu.unq.desapp.grupog.criptop2p.config.utils.JwtUtil;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.ErrorMessageResponseBody;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,11 +51,25 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                 filterChain.doFilter(request, response);
-            } catch (Exception exception) {
-                log.error("Authorization attempt failed in: {}", exception.getMessage());
+            } catch (TokenExpiredException exception) {
+                log.error("Authorization attempt failed: {}", exception.getMessage());
 
-                response.setHeader("Authorization_failed", exception.getMessage());
+                ObjectWriter objectWriter =
+                        new ObjectMapper()
+                                .registerModule(new JavaTimeModule())
+                                .writer()
+                                .withDefaultPrettyPrinter();
+
+                ErrorMessageResponseBody errorMessageResponseBody =
+                        new ErrorMessageResponseBody(
+                                FORBIDDEN.value(),
+                                LocalDateTime.now(),
+                                FORBIDDEN.getReasonPhrase(),
+                                exception.getMessage());
+
                 response.setStatus(FORBIDDEN.value());
+                response.setContentType("application/json");
+                response.getWriter().write(objectWriter.writeValueAsString(errorMessageResponseBody));
             }
 
         } else {

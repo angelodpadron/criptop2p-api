@@ -84,4 +84,7 @@ public class TransactionOrder {
         interestedUser.addPoints(pointsToBeAdded);
     }
 
+    public boolean wasCancelledBySystem() {
+        return transactionStatus == TransactionStatus.CANCELLED_BY_SYSTEM;
+    }
 }
