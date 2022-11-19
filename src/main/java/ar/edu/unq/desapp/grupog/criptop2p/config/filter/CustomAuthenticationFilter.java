@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Slf4j
 @RequiredArgsConstructor
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -38,12 +40,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
         User userDetails = (User) authentication.getPrincipal();
-
         String accessToken = JwtUtil.generateAccessToken(userDetails, request.getRequestURL().toString());
-
-        log.info("User '{}' has logged in", userDetails.getUsername());
-
-        response.setHeader("access_token", accessToken);
+        log.info("Token generated for user '{}'", userDetails.getUsername());
+        response.setHeader(AUTHORIZATION, accessToken);
 
     }
 
