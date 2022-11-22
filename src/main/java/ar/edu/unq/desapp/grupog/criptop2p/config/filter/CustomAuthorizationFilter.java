@@ -2,7 +2,6 @@ package ar.edu.unq.desapp.grupog.criptop2p.config.filter;
 
 import ar.edu.unq.desapp.grupog.criptop2p.config.utils.JwtUtil;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.ErrorMessageResponseBody;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -51,7 +50,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                 filterChain.doFilter(request, response);
-            } catch (TokenExpiredException exception) {
+            } catch (Exception exception) {
                 log.error("Authorization attempt failed: {}", exception.getMessage());
 
                 ObjectWriter objectWriter =

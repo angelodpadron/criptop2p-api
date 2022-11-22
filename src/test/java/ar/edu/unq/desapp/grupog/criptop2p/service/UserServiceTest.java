@@ -23,8 +23,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getBasicUser1;
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ServiceTestResources.getUserRequestBodyFromEntity;
+import static ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources.getBasicUser1;
+import static ar.edu.unq.desapp.grupog.criptop2p.ServiceTestResources.getUserRequestBodyFromEntity;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

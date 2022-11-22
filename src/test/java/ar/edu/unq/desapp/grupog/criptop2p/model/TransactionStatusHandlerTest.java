@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.model;
 
+import ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.*;
-import ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources;
 import ar.edu.unq.desapp.grupog.criptop2p.model.status.AwaitingTransferenceStatusHandler;
 import ar.edu.unq.desapp.grupog.criptop2p.model.status.TransactionStatusHandler;
 import org.junit.jupiter.api.Assertions;

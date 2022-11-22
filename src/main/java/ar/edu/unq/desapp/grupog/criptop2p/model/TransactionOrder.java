@@ -6,6 +6,8 @@ import ar.edu.unq.desapp.grupog.criptop2p.model.status.TransactionStatusHandler;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ public class TransactionOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private MarketOrder marketOrder;
     private LocalDateTime creationDate;
     @ManyToOne

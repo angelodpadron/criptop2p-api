@@ -8,8 +8,8 @@ import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.Transaction
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getPurchaseMarketOrder1;
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getSellingMarketOrder1;
+import static ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources.getPurchaseMarketOrder1;
+import static ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources.getSellingMarketOrder1;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

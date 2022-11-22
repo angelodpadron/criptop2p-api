@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources.getSellingTransactionOrder1;
 import static ar.edu.unq.desapp.grupog.criptop2p.model.TransactionStatus.*;
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getSellingTransactionOrder1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TransactionOrderTest {

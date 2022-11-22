@@ -1,10 +1,12 @@
 package ar.edu.unq.desapp.grupog.criptop2p.utils.aspects;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.CodeSignature;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.stream.IntStream;
 
 @Aspect
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class LogExecutionTimeAspectAnnotation {
 
@@ -34,7 +37,16 @@ public class LogExecutionTimeAspectAnnotation {
                 .boxed()
                 .collect(Collectors.toMap(parameters::get, argumentsProvided::get));
 
-        log.info(joinPoint.getSignature().toLongString() + " executed with args " + paramsAndArgs + " finalized in " + executionTime + " ms");
+        String operator = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        log.info("Method execution: " +
+                "<user: " + operator + ", " +
+                "method: " + methodSignature.toLongString() + ", " +
+                "args: " + paramsAndArgs + ", " +
+                "execution time: " + executionTime + " ms>");
 
         return proceed;
     }
