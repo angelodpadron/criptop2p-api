@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupog.criptop2p.DataLoader;
 import ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.LoginRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
+import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.model.OperationType;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -142,7 +143,6 @@ public class MarketOrderIntegrationTest {
     @Test
     @DisplayName("Applying to an owned market order should return a status code of 400")
     void applyingToAnOwnedMarketOrderShouldReturnAStatusCodeOf400Test() throws Exception {
-        String applyResourcePath = baseUrl + "/apply/1";
         String createResourcePath = baseUrl + "/create";
         String cryptoSymbol = "BTC";
         dataLoader.createQuotationData(cryptoSymbol, 10.0, 10.0);
@@ -152,11 +152,16 @@ public class MarketOrderIntegrationTest {
                         .header(HttpHeaders.AUTHORIZATION, authTokenUser1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(marketOrderRequestBody)))
-                .andExpect(status().isCreated());
-
-        mvc.perform(post(applyResourcePath)
-                        .header(HttpHeaders.AUTHORIZATION, authTokenUser1))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isCreated())
+                .andDo(result -> {
+                    Long createdMarketOrderId = mapper
+                            .readValue(result.getResponse().getContentAsString(), MarketOrderResponseBody.class)
+                            .getId();
+                    String applyResourcePath = baseUrl + "/apply/" + createdMarketOrderId;
+                    mvc.perform(post(applyResourcePath)
+                                    .header(HttpHeaders.AUTHORIZATION, authTokenUser1))
+                            .andExpect(status().isBadRequest());
+                });
 
     }
 
@@ -164,7 +169,7 @@ public class MarketOrderIntegrationTest {
     @DisplayName("Applying to another user market order should return a status code of 200")
     void applyingToAnotherUserMarketOrderShouldReturnAStatusCodeOf200Test() throws Exception {
         String createResourcePath = baseUrl + "/create";
-        String applyResourcePath = baseUrl + "/apply/1";
+
         String cryptoSymbol = "BTC";
         dataLoader.createQuotationData(cryptoSymbol, 10.0, 10.0);
         MarketOrderRequestBody marketOrderRequestBody = new MarketOrderRequestBody(cryptoSymbol, 1.0, 10.0, OperationType.SELL);
@@ -173,11 +178,18 @@ public class MarketOrderIntegrationTest {
                         .header(HttpHeaders.AUTHORIZATION, authTokenUser1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(marketOrderRequestBody)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andDo(result -> {
+                    Long createdMarketOrderId = mapper
+                            .readValue(result.getResponse().getContentAsString(), MarketOrderResponseBody.class)
+                            .getId();
+                    String applyResourcePath = baseUrl + "/apply/" + createdMarketOrderId;
+                    mvc.perform(post(applyResourcePath)
+                                    .header(HttpHeaders.AUTHORIZATION, authTokenUser2))
+                            .andExpect(status().isOk());
+                });
 
-        mvc.perform(post(applyResourcePath)
-                        .header(HttpHeaders.AUTHORIZATION, authTokenUser2))
-                .andExpect(status().isOk());
+
     }
 
     private String requestTokenFor(LoginRequestBody loginRequestBody) throws Exception {
