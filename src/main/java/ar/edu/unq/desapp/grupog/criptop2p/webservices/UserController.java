@@ -4,7 +4,6 @@ import ar.edu.unq.desapp.grupog.criptop2p.dto.LoginRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserSummaryResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.user.EmailAlreadyTakenException;
-import ar.edu.unq.desapp.grupog.criptop2p.model.User;
 import ar.edu.unq.desapp.grupog.criptop2p.service.UserService;
 import ar.edu.unq.desapp.grupog.criptop2p.utils.aspects.LogExecutionTime;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,9 +35,9 @@ public class UserController {
     @Operation(summary = "Create a new user on the platform")
     @PostMapping(path = "/register")
     @ResponseBody
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserRequestBody userRequestBody) throws EmailAlreadyTakenException {
-        User userCreated = userService.saveUser(userRequestBody);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userCreated);
+    public ResponseEntity<UserRequestBody> createUser(@Valid @RequestBody UserRequestBody userRequestBody) throws EmailAlreadyTakenException {
+        userService.saveUser(userRequestBody);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userRequestBody);
     }
 
     @Operation(summary = "Get a summary of all the users of the platform")

@@ -59,10 +59,9 @@ class UserServiceTest {
         when(userRepository.save(any())).thenReturn(user1);
         when(modelMapper.map(userRequestBody1, User.class)).thenReturn(user1);
 
-        User savedUser = userService.saveUser(userRequestBody1);
+        userService.saveUser(userRequestBody1);
 
         verify(userRepository).save(user1);
-        assertEquals(user1, savedUser);
     }
 
     @DisplayName("Cannot save a user with an already registered email address")
