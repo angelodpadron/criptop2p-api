@@ -5,7 +5,6 @@ import ar.edu.unq.desapp.grupog.criptop2p.config.filter.CustomAuthorizationFilte
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,7 +40,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/login/**", "/api/user/register/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/quotations/**").hasAnyAuthority("ROLE_USER")
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

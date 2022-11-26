@@ -4,13 +4,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public final class JwtUtil {
@@ -28,7 +25,6 @@ public final class JwtUtil {
                 .withSubject(userDetails.getUsername())
                 .withExpiresAt(shortLifeSpam)
                 .withIssuer(issuer)
-                .withClaim("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
     }
 
@@ -40,10 +36,6 @@ public final class JwtUtil {
 
     public static String decodeUserEmail(String token) {
         return decodeToken(token).getSubject();
-    }
-
-    public static List<String> decodeUserRoles(String token) {
-        return List.of(decodeToken(token).getClaim("roles").asArray(String.class));
     }
 
 }

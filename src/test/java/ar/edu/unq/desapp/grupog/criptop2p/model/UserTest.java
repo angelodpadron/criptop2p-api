@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class UserTest {
@@ -57,26 +56,6 @@ class UserTest {
         user.setPoints(10);
         user.setOperations(10);
         assertEquals(1, user.getReputation());
-    }
-
-    @Test
-    @DisplayName("Initially a user have no roles")
-    void aUserWithoutRolesTest() {
-        User user = new User();
-        assertTrue(user.getRoles().isEmpty());
-    }
-
-    @Test
-    @DisplayName("A role can be assigned to a user")
-    void aUserWithRolesTest() {
-        User user = new User();
-        Role role = mock(Role.class);
-        when(role.getName()).thenReturn("USER_ROLE");
-
-        user.addRole(role);
-
-        assertTrue(user.getRoles().contains(role));
-        assertEquals("USER_ROLE", user.getRoles().get(0).getName());
     }
 
     @Test

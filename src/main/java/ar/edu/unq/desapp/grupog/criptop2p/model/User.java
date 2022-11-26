@@ -35,9 +35,6 @@ public class User {
     @JsonIgnore
     @ManyToMany
     private List<TransactionOrder> transactionOrders = new ArrayList<>();
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Role> roles = new ArrayList<>();
     private Integer points = 0;
     private Integer operations = 0;
 
@@ -56,9 +53,6 @@ public class User {
             return operations;
         }
         return points / operations;
-    }
-    public void addRole(Role role) {
-        roles.add(role);
     }
 
     public void addMarketOrder(MarketOrder marketOrder) {

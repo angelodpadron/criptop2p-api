@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -17,9 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -41,12 +37,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 String token = authorizationHeader.substring("Bearer ".length());
 
                 String userEmail = JwtUtil.decodeUserEmail(token);
-                List<String> roles = JwtUtil.decodeUserRoles(token);
 
-                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userEmail, null, authorities);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userEmail, null, null);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                 filterChain.doFilter(request, response);

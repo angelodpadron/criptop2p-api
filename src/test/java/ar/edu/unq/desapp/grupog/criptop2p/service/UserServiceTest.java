@@ -3,9 +3,7 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserSummaryResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.user.EmailAlreadyTakenException;
-import ar.edu.unq.desapp.grupog.criptop2p.model.Role;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
-import ar.edu.unq.desapp.grupog.criptop2p.persistence.RoleRepository;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,8 +32,6 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
-    @Mock
-    private RoleRepository roleRepository;
     @Mock
     private ModelMapper modelMapper;
     @Mock
@@ -107,31 +103,6 @@ class UserServiceTest {
     @Test
     void retrievingAnUnregisteredUserExceptionTest() {
         assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername(user1.getEmail()));
-    }
-
-    @DisplayName("When a role is saved the saved role is returned")
-    @Test
-    void savingARoleTest() {
-        Role role = new Role(null, "USER_ROLE");
-        when(roleRepository.save(any())).thenReturn(role);
-
-        Role savedRole = userService.saveRole(role);
-
-        verify(roleRepository).save(role);
-        assertEquals(role, savedRole);
-    }
-
-    @DisplayName("A role can be assigned to a user")
-    @Test
-    void assigningARoleToAUserTest() {
-        Role role = new Role(null, "USER_ROLE");
-        when(userRepository.findByEmail(any())).thenReturn(user1);
-        when(roleRepository.findByName(any())).thenReturn(role);
-
-        userService.addRoleToUser(user1.getEmail(), role.getName());
-
-        assertTrue(user1.getRoles().contains(role));
-
     }
 
 

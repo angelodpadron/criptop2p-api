@@ -3,9 +3,7 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserSummaryResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.user.EmailAlreadyTakenException;
-import ar.edu.unq.desapp.grupog.criptop2p.model.Role;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
-import ar.edu.unq.desapp.grupog.criptop2p.persistence.RoleRepository;
 import ar.edu.unq.desapp.grupog.criptop2p.persistence.UserRepository;
 import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.Mappers;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +29,6 @@ import java.util.List;
 @Slf4j
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -47,20 +44,9 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public Role saveRole(Role role) {
-        return roleRepository.save(role);
-    }
-
     public User getUserLoggedIn() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByEmail(authentication.getName());
-    }
-
-    public void addRoleToUser(String email, String roleName) {
-        User user = userRepository.findByEmail(email);
-        Role role = roleRepository.findByName(roleName);
-        user.addRole(role);
-
     }
 
     public List<UserSummaryResponseBody> getSummaryOfAllUsers() {
@@ -83,19 +69,15 @@ public class UserService implements UserDetailsService {
     }
 
     // spring security
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
         User user = userRepository.findByEmail(email);
-
         if (user == null) {
             log.error("User with email {} not found", email);
             throw new UsernameNotFoundException("User not found");
         }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
