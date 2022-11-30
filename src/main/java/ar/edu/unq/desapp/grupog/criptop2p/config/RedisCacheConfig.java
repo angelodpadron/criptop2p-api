@@ -10,7 +10,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 
 import java.time.Duration;
 
-@Profile("!test")
+@Profile("dev")
 @Configuration
 @EnableCaching
 public class RedisCacheConfig {
