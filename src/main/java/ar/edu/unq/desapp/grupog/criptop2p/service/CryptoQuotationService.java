@@ -12,6 +12,7 @@ import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.BCRAClient;
 import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.BinanceClient;
 import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.Mappers;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,11 +28,13 @@ public class CryptoQuotationService {
     private final BinanceClient binanceClient;
     private final BCRAClient bcraClient;
 
+    @Cacheable("all_quotations")
     public List<CurrentCryptoQuotationResponseBody> getAllCurrentQuotations() {
         List<CryptoQuotation> cryptoQuotations = cryptoQuotationRepository.findAll();
         return cryptoQuotations.stream().map(Mappers::cryptoQuotationEntityToResponseBody).toList();
     }
 
+    @Cacheable("last_24h_quotation")
     public CryptoQuotationResponseBody getLast24HoursQuotationFor(String symbol) throws SymbolNotFoundException {
         CryptoQuotation cryptoQuotation = getCryptoQuotation(symbol);
         return Mappers.cryptoQuotationEntityTo24HoursResponseBody(cryptoQuotation);

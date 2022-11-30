@@ -7,13 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CurrentCryptoQuotationResponseBody {
+public class CurrentCryptoQuotationResponseBody implements Serializable {
     private String symbol;
     @JsonProperty("price_in_usd")
     private Double priceInUsd;

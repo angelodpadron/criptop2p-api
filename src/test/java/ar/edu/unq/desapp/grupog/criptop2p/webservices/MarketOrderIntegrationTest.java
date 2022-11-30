@@ -7,14 +7,17 @@ import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.model.OperationType;
 import ar.edu.unq.desapp.grupog.criptop2p.model.User;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.BCRAClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,11 +37,18 @@ public class MarketOrderIntegrationTest {
     private DataLoader dataLoader;
     @Autowired
     private ObjectMapper mapper;
+    @MockBean
+    private BCRAClient bcraClient;
+
     private String authTokenUser1;
     private String authTokenUser2;
 
     @BeforeEach
     void setup() throws Exception {
+
+        // Config required component mock
+        Mockito.when(bcraClient.getLastUSDARSQuotation()).thenReturn(0.0);
+
         // Load user into database
 
         User user1 = ModelTestResources.getBasicUser1();

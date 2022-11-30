@@ -2,13 +2,17 @@ package ar.edu.unq.desapp.grupog.criptop2p.webservices;
 
 import ar.edu.unq.desapp.grupog.criptop2p.DataLoader;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.CryptoQuotationResponseBody;
+import ar.edu.unq.desapp.grupog.criptop2p.utils.resources.BCRAClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,10 +29,19 @@ public class CryptoQuotationIntegrationTest {
 
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
     private final String baseUrl = "/api/quotations/";
+
     @Autowired
     private MockMvc mvc;
     @Autowired
     private DataLoader dataLoader;
+
+    @MockBean
+    private BCRAClient bcraClient;
+
+    @BeforeEach
+    void setup() {
+        Mockito.when(bcraClient.getLastUSDARSQuotation()).thenReturn(0.0);
+    }
 
     @Test
     @DisplayName("Getting all saved quotations should return a status code of 200")
