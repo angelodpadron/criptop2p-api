@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,10 @@ public class CryptoQuotationService {
 
     @Cacheable("last_24h_quotation")
     public CryptoQuotationResponseBody getLast24HoursQuotationFor(String symbol) throws SymbolNotFoundException {
-        CryptoQuotation cryptoQuotation = getCryptoQuotation(symbol);
+        CryptoQuotation cryptoQuotation = cryptoQuotationRepository
+                .findBySymbolAndQuotationDataLastUpdateAfter(symbol, LocalDateTime.now().minusDays(1))
+                .orElseThrow(() -> new SymbolNotFoundException(symbol));
+
         return Mappers.cryptoQuotationEntityTo24HoursResponseBody(cryptoQuotation);
     }
 
