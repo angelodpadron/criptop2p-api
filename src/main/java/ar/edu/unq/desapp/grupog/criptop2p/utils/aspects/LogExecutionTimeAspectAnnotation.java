@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupog.criptop2p.utils.aspects;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -9,6 +11,7 @@ import org.aspectj.lang.reflect.CodeSignature;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,6 +23,8 @@ import java.util.stream.IntStream;
 @Slf4j
 public class LogExecutionTimeAspectAnnotation {
 
+    private final ObjectMapper mapper;
+
     @Around("@annotation(LogExecutionTime) || @within(LogExecutionTime)")
     public Object logExecutionTimeAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
 
@@ -30,7 +35,16 @@ public class LogExecutionTimeAspectAnnotation {
         CodeSignature methodSignature = (CodeSignature) joinPoint.getSignature();
 
         List<Object> parameters = List.of(methodSignature.getParameterNames());
-        List<Object> argumentsProvided = List.of(joinPoint.getArgs());
+        List<Object> argumentsProvided = Arrays
+                .stream(joinPoint.getArgs())
+                .map(arg -> {
+                    try {
+                        return mapper.writeValueAsString(arg);
+                    } catch (JsonProcessingException e) {
+                        return arg;
+                    }
+                })
+                .toList();
 
         Map<Object, Object> paramsAndArgs = IntStream
                 .range(0, parameters.size())
