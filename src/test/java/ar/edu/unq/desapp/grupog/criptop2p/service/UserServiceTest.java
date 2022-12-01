@@ -23,8 +23,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getBasicUser1;
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ServiceTestResources.getUserRequestBodyFromEntity;
+import static ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources.getBasicUser1;
+import static ar.edu.unq.desapp.grupog.criptop2p.ServiceTestResources.getUserRequestBodyFromEntity;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -59,10 +59,9 @@ class UserServiceTest {
         when(userRepository.save(any())).thenReturn(user1);
         when(modelMapper.map(userRequestBody1, User.class)).thenReturn(user1);
 
-        User savedUser = userService.saveUser(userRequestBody1);
+        userService.saveUser(userRequestBody1);
 
         verify(userRepository).save(user1);
-        assertEquals(user1, savedUser);
     }
 
     @DisplayName("Cannot save a user with an already registered email address")

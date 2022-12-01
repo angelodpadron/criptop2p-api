@@ -24,13 +24,15 @@ public class MarketOrderService {
     private final UserService userService;
     private final CryptoQuotationService cryptoQuotationService;
 
-    public void addMarketOrderToUser(MarketOrderRequestBody marketOrderRequestBody) throws MarketOrderException, SymbolNotFoundException {
+    public MarketOrderResponseBody addMarketOrderToUser(MarketOrderRequestBody marketOrderRequestBody) throws MarketOrderException, SymbolNotFoundException {
         User user = userService.getUserLoggedIn();
         Double marketPrice = cryptoQuotationService.getCurrentUsdPriceFor(marketOrderRequestBody.getCryptocurrency());
         MarketOrder marketOrder = marketOrderRequestBodyToEntity(marketOrderRequestBody, user, marketPrice);
 
         marketOrderRepository.save(marketOrder);
         user.addMarketOrder(marketOrder);
+
+        return Mappers.marketOrderEntityToResponseBody(marketOrder);
 
     }
 

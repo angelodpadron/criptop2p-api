@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.OperationAmountResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.cryptoquotation.SymbolNotFoundException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.InvalidMarketPriceException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.PriceExceedsOperationLimitException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
@@ -33,7 +34,7 @@ public class TransactionOrderService {
     private final CryptoQuotationService cryptoQuotationService;
     private final BCRAClient bcraClient;
 
-    public TransactionOrderResponseBody addTransactionOrderToUser(Long marketOrderId) throws TransactionOrderException, PriceExceedsOperationLimitException, MarketOrderNotFoundException, SymbolNotFoundException {
+    public TransactionOrderResponseBody addTransactionOrderToUser(Long marketOrderId) throws TransactionOrderException, PriceExceedsOperationLimitException, MarketOrderNotFoundException, SymbolNotFoundException, InvalidMarketPriceException {
         User interestedUser = userService.getUserLoggedIn();
         MarketOrder marketOrder = marketOrderService.getMarketOrder(marketOrderId);
         Double marketPrice = cryptoQuotationService.getCurrentUsdPriceFor(marketOrder.getCryptocurrency());
@@ -43,6 +44,10 @@ public class TransactionOrderService {
                         marketOrder
                                 .generateTransactionFor(interestedUser, marketPrice)
                 );
+
+        if (transactionOrder.wasCancelledBySystem()) {
+            throw new InvalidMarketPriceException("Target price exceeds allowable variation");
+        }
 
         return transactionOrderEntityToResponseBody(transactionOrder);
 

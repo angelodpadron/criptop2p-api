@@ -21,9 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
 
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getBasicUser1;
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getSellingMarketOrder1;
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ServiceTestResources.getMarketOrderRequestBodyFromEntity;
+import static ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources.getBasicUser1;
+import static ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources.getSellingMarketOrder1;
+import static ar.edu.unq.desapp.grupog.criptop2p.ServiceTestResources.getMarketOrderRequestBodyFromEntity;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

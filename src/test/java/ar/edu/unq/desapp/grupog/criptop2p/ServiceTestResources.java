@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupog.criptop2p.model.resources;
+package ar.edu.unq.desapp.grupog.criptop2p;
 
 import ar.edu.unq.desapp.grupog.criptop2p.dto.MarketOrderRequestBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.UserRequestBody;

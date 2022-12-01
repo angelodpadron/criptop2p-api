@@ -45,9 +45,8 @@ public class MarketOrderController {
     @Operation(summary = "Create a market order")
     @PostMapping(path = "/create")
     @ResponseBody
-    public ResponseEntity<MarketOrderRequestBody> createMarketOrder(@RequestBody MarketOrderRequestBody marketOrderRequestBody) throws MarketOrderException, SymbolNotFoundException {
-        marketOrderService.addMarketOrderToUser(marketOrderRequestBody);
-        return ResponseEntity.status(HttpStatus.CREATED).body(marketOrderRequestBody);
+    public ResponseEntity<MarketOrderResponseBody> createMarketOrder(@RequestBody MarketOrderRequestBody marketOrderRequestBody) throws MarketOrderException, SymbolNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(marketOrderService.addMarketOrderToUser(marketOrderRequestBody));
     }
 
     @Operation(summary = "Apply for a market order")

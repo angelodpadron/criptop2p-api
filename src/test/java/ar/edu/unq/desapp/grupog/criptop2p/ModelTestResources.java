@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupog.criptop2p.model.resources;
+package ar.edu.unq.desapp.grupog.criptop2p;
 
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.model.MarketOrder;
@@ -30,6 +30,17 @@ public class ModelTestResources {
                 "Oeste 1",
                 "4608738591410700547451",
                 "45821674");
+    }
+
+    public static User getBasicUser3() {
+        return new User(
+                "Aemma",
+                "Arryn",
+                "arryn@gmail.com",
+                "Password@1",
+                "Oeste 1",
+                "4608738590014107545174",
+                "82744516");
     }
 
     public static MarketOrder getSellingMarketOrder1() {

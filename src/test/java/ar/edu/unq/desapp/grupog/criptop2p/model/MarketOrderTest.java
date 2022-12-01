@@ -8,8 +8,8 @@ import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.Transaction
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getPurchaseMarketOrder1;
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getSellingMarketOrder1;
+import static ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources.getPurchaseMarketOrder1;
+import static ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources.getSellingMarketOrder1;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -70,23 +70,24 @@ class MarketOrderTest {
         User user = mock(User.class);
         when(user.getEmail()).thenReturn("interested@test.com");
 
-        try {
-            sellingMarketOrder.generateTransactionFor(user, correctAssetQuote);
-        } catch (PriceExceedsOperationLimitException exception) {
-            fail("Should not throw exception", exception);
-        }
+        TransactionOrder transactionOrder = sellingMarketOrder.generateTransactionFor(user, correctAssetQuote);
+        assertFalse(sellingMarketOrder.getAvailable());
+        assertEquals(TransactionStatus.AWAITING_TRANSFERENCE, transactionOrder.getTransactionStatus());
     }
 
     @Test
     @DisplayName("A sell market order cannot generate a transaction order when the asset quotation is higher than the target price")
-    void aSellMarketOrderWithATargetPriceHigherThanAssertQuotationExceptionTest() {
+    void aSellMarketOrderWithATargetPriceHigherThanAssertQuotationExceptionTest() throws TransactionOrderException {
         MarketOrder sellingMarketOrder = getSellingMarketOrder1();
         Double higherQuotation = sellingMarketOrder.getMarketPrice() + 1;
 
         User user = mock(User.class);
         when(user.getEmail()).thenReturn("interested@test.com");
 
-        assertThrows(PriceExceedsOperationLimitException.class, () -> sellingMarketOrder.generateTransactionFor(user, higherQuotation));
+        TransactionOrder transactionOrder = sellingMarketOrder.generateTransactionFor(user, higherQuotation);
+
+        assertTrue(sellingMarketOrder.getAvailable());
+        assertEquals(TransactionStatus.CANCELLED_BY_SYSTEM, transactionOrder.getTransactionStatus());
 
     }
 
@@ -99,23 +100,23 @@ class MarketOrderTest {
         User user = mock(User.class);
         when(user.getEmail()).thenReturn("interested@test.com");
 
-        try {
-            purchaseMarketOrder.generateTransactionFor(user, correctAssetQuote);
-        } catch (PriceExceedsOperationLimitException exception) {
-            fail("Should not throw exception", exception);
-        }
+        TransactionOrder transactionOrder = purchaseMarketOrder.generateTransactionFor(user, correctAssetQuote);
+        assertFalse(purchaseMarketOrder.getAvailable());
+        assertEquals(TransactionStatus.AWAITING_TRANSFERENCE, transactionOrder.getTransactionStatus());
     }
 
     @Test
     @DisplayName("A purchase market order cannot generate a transaction order when the asset quotation is lower than the target price")
-    void aPurchaseMarketOrderWithATargetPriceLowerThanAssertQuotationExceptionTest() {
+    void aPurchaseMarketOrderWithATargetPriceLowerThanAssertQuotationExceptionTest() throws TransactionOrderException {
         MarketOrder purchaseMarketOrder = getPurchaseMarketOrder1();
         Double lowerQuotation = purchaseMarketOrder.getTargetPrice() - 1;
 
         User user = mock(User.class);
         when(user.getEmail()).thenReturn("interested@test.com");
+        TransactionOrder transactionOrder = purchaseMarketOrder.generateTransactionFor(user, lowerQuotation);
 
-        assertThrows(PriceExceedsOperationLimitException.class, () -> purchaseMarketOrder.generateTransactionFor(user, lowerQuotation));
+        assertTrue(purchaseMarketOrder.getAvailable());
+        assertEquals(TransactionStatus.CANCELLED_BY_SYSTEM, transactionOrder.getTransactionStatus());
     }
 
     @Test

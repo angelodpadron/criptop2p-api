@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuotationData {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cryptoquotation_id")
     CryptoQuotation cryptoQuotation;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

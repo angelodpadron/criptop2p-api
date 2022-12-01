@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupog.criptop2p.service;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.OperationAmountResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.dto.TransactionOrderResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.cryptoquotation.SymbolNotFoundException;
+import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.InvalidMarketPriceException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionStatusException;
@@ -26,8 +27,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static ar.edu.unq.desapp.grupog.criptop2p.ModelTestResources.getSellingTransactionOrderWithId;
 import static ar.edu.unq.desapp.grupog.criptop2p.model.TransactionStatus.*;
-import static ar.edu.unq.desapp.grupog.criptop2p.model.resources.ModelTestResources.getSellingTransactionOrderWithId;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -67,7 +68,7 @@ class TransactionOrderServiceTest {
 
     @DisplayName("The service generates a transaction order and return a transaction response body")
     @Test
-    void generateATransactionOrderAndReturnResponseBodyTest() throws MarketOrderNotFoundException, TransactionOrderException, SymbolNotFoundException {
+    void generateATransactionOrderAndReturnResponseBodyTest() throws MarketOrderNotFoundException, TransactionOrderException, SymbolNotFoundException, InvalidMarketPriceException {
         TransactionOrder sellingTransactionOrder = getSellingTransactionOrderWithId(1L);
 
         User dealerUser = sellingTransactionOrder.getDealerUser();

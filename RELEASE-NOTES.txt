@@ -1,15 +1,21 @@
 ---------------------------------------------------------------------
-ENTREGA 2 TAG 2.2
+ENTREGA 3 TAG 3.0
 ---------------------------------------------------------------------
 NEW FEATURES
 
-* Added endpoint to obtain a list of all platform users.
-* Added annotation to log execution details of either a specific method or all methods of a class.
+* Added endpoint to obtain the last 24 hours quotations of certain cryptocurrency.
+* Added cache to the quotations data endpoints to improve response times.
+* Updated log execution details.
 
 OTHERS
 
-* Updated SonarQube exclusions config.
+* Added architecture tests.
+* Added the integration tests that was pending.
 
 NOTES
 
-* More integration tests are still pending.
+* In order to cache the crypto-quotations endpoints, an instance of redis must be running locally in the port 6379,
+  and the app must be running using the "dev" profile.
+* The deployment done on Heroku is no longer available due to recent changes of their services.
+* Because of the above, another branch might be created with the files and configurations required to run the app
+  using Docker.

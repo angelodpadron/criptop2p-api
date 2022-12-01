@@ -64,7 +64,7 @@ class CryptoQuotationServiceTest {
         QuotationData quotationData = mock(QuotationData.class);
         String symbol = "ALICEUSDT";
 
-        when(cryptoQuotationRepository.findCryptoQuotationBySymbol(symbol)).thenReturn(Optional.ofNullable(cryptoQuotation));
+        when(cryptoQuotationRepository.findBySymbolAndQuotationDataLastUpdateAfter(any(), any())).thenReturn(Optional.ofNullable(cryptoQuotation));
         when(cryptoQuotation.getQuotationData()).thenReturn(List.of(quotationData));
         when(cryptoQuotation.getSymbol()).thenReturn(symbol);
         when(quotationData.getPriceInUSD()).thenReturn(0.0);
@@ -73,7 +73,7 @@ class CryptoQuotationServiceTest {
 
         CryptoQuotationResponseBody responseBody = cryptoQuotationService.getLast24HoursQuotationFor(symbol);
 
-        verify(cryptoQuotationRepository).findCryptoQuotationBySymbol(symbol);
+        verify(cryptoQuotationRepository).findBySymbolAndQuotationDataLastUpdateAfter(any(), any());
         assertEquals(symbol, responseBody.getSymbol());
         assertFalse(responseBody.getQuotations().isEmpty());
         assertEquals(0.0, responseBody.getQuotations().get(0).getPriceInUsd());

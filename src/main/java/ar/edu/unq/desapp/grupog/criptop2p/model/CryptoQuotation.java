@@ -16,7 +16,7 @@ public class CryptoQuotation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String symbol;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cryptoQuotation")
     private List<QuotationData> quotationData;
 
     public CryptoQuotation(String symbol, List<QuotationData> quotationData) {

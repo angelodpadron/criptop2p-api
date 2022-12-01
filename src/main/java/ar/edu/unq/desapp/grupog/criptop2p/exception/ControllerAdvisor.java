@@ -1,12 +1,12 @@
 package ar.edu.unq.desapp.grupog.criptop2p.exception;
 
+import ar.edu.unq.desapp.grupog.criptop2p.dto.ErrorMessageResponseBody;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.cryptoquotation.SymbolNotFoundException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.MarketOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.marketorder.PriceExceedsOperationLimitException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.transactionorder.TransactionOrderException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.user.EmailAlreadyTakenException;
 import ar.edu.unq.desapp.grupog.criptop2p.exception.user.InvalidConsultationDatesException;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,73 +16,57 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
 import java.net.ConnectException;
-import java.util.List;
-import java.util.Map;
-
-import static java.util.stream.Collectors.*;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ControllerAdvisor {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, List<String>> handleInvalidRequestBody(MethodArgumentNotValidException exception) {
+    public ErrorMessageResponseBody handleInvalidRequestBody(MethodArgumentNotValidException exception) {
 
-        return exception
+        String description = exception
                 .getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .collect(groupingBy(FieldError::getField, mapping(DefaultMessageSourceResolvable::getDefaultMessage, toList())));
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.joining(". "));
+
+        return generateErrorMessageResponseBody(HttpStatus.BAD_REQUEST, description);
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(EmailAlreadyTakenException.class)
-    public String handleEmailAlreadyTaken(EmailAlreadyTakenException exception) {
-        return exception.getMessage();
+    @ExceptionHandler(value = {
+            EmailAlreadyTakenException.class,
+            PriceExceedsOperationLimitException.class
+    })
+    public ErrorMessageResponseBody basicConflictStatusExceptionHandler(Exception exception) {
+        return generateErrorMessageResponseBody(HttpStatus.CONFLICT, exception.getMessage());
+
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ConstraintViolationException.class)
-    public String handleConstraints(ConstraintViolationException exception) {
-        return exception.getMessage();
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MarketOrderException.class)
-    public String handleInvalidMarketOrder(MarketOrderException exception) {
-        return exception.getMessage();
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(TransactionOrderException.class)
-    public String handleInvalidTransactionOrder(TransactionOrderException exception) {
-        return exception.getMessage();
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(InvalidConsultationDatesException.class)
-    public String handleInvalidConsultationDates(InvalidConsultationDatesException exception) {
-        return exception.getMessage();
-    }
-
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(PriceExceedsOperationLimitException.class)
-    public String handlePriceExceedsOperationLimitException(PriceExceedsOperationLimitException exception) {
-        return exception.getMessage();
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(SymbolNotFoundException.class)
-    public String handleSymbolNotFoundException(SymbolNotFoundException exception) {
-        return exception.getMessage();
+    @ExceptionHandler(value = {
+            ConstraintViolationException.class,
+            MarketOrderException.class,
+            TransactionOrderException.class,
+            InvalidConsultationDatesException.class,
+            SymbolNotFoundException.class
+    })
+    public ErrorMessageResponseBody basicBadRequestStatusExceptionHandler(Exception exception) {
+        return generateErrorMessageResponseBody(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     // Telecentro moment
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @ExceptionHandler(ConnectException.class)
-    public String handleConnectionException(ConnectException exception) {
-        return exception.getMessage();
+    public ErrorMessageResponseBody handleConnectionException(ConnectException exception) {
+        return generateErrorMessageResponseBody(HttpStatus.SERVICE_UNAVAILABLE, exception.getMessage());
     }
 
+    private ErrorMessageResponseBody generateErrorMessageResponseBody(HttpStatus responseStatus, String details) {
+        return new ErrorMessageResponseBody(responseStatus.value(), LocalDateTime.now(), responseStatus.getReasonPhrase(), details);
+    }
 
 }
