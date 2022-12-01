@@ -11,7 +11,7 @@
 
 - ### Open a terminal inside the root folder of the project
 - ### Run the command `docker-compose up`
-- ### Now the app will start running on localhost:8080
+- ### Now the app will start running on `localhost:8080`
 
 ---
 
