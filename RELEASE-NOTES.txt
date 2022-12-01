@@ -14,8 +14,6 @@ OTHERS
 
 NOTES
 
-* In order to cache the crypto-quotations endpoints, an instance of redis must be running locally in the port 6379,
-  and the app must be running using the "dev" profile.
-* The deployment done on Heroku is no longer available due to recent changes of their services.
-* Because of the above, another branch might be created with the files and configurations required to run the app
-  using Docker.
+* this version of the app is intended to be executed through docker compose, to be executed locally
+  you need to configure a connection to a sql database such as MySQL, as well as a connection to an instance of redis
+  to enable caching of the quotations.
